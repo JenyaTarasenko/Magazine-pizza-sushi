@@ -1,0 +1,244 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- кнопка назад -->
+<div class="max-w-6xl mx-auto px-4 pt-24">
+
+    <a href="/" class="inline-flex items-center gap-2 
+               text-[#64352A] hover:text-black transition group 
+               border-2 border-[#64352A] rounded-full px-4 py-2">
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition group-hover:-translate-x-1" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+
+        <span class="font-montserrat text-sm">
+            На главную
+        </span>
+    </a>
+
+</div>
+<!-- кнопка назад -->
+
+<!-- заголовок -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/privacy.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-2xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Публичная
+        <span class="text-[#BF0F0F] font-normal">оферта</span>
+    </h4>
+</div>
+<!-- заголовок -->
+
+<!-- все карточки -->
+<div class="max-w-5xl mx-auto px-4 py-10 
+            grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Карточка -->
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            1. Общие положения
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Настоящий документ является официальным предложением (публичной офертой) о продаже товаров дистанционным
+            способом. Оформляя заказ на сайте, пользователь подтверждает согласие с условиями данной оферты.
+        </p>
+
+    </div>
+
+    <!-- Карточка -->
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            2. Предмет договора
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Продавец обязуется приготовить и передать Покупателю продукцию (пиццу, суши и другие товары), а Покупатель
+            обязуется оплатить и принять заказ на условиях настоящей оферты.
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            3. Оформление заказа
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Заказ оформляется через сайт путем добавления товаров в корзину и заполнения необходимых данных (имя,
+            телефон, адрес доставки). После оформления заказа с Покупателем может связаться оператор для подтверждения.
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            4. Стоимость и оплата
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Цены на сайте указаны в гривнах.
+            Оплата возможна:
+            онлайн через LiqPay
+            наличными при получении
+            безналичным расчетом
+            При онлайн-оплате пользователь перенаправляется на защищенную страницу платежной системы.
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            5. Доставка товара
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Доставка осуществляется по указанному адресу в согласованное время.
+            Срок доставки обычно составляет от 30 до 60 минут.
+            Возможен самовывоз.
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            6. Права и обязанности сторон
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Продавец обязуется:
+            предоставить достоверную информацию о товаре
+            приготовить и доставить заказ надлежащего качества
+            Покупатель обязуется:
+            предоставить корректные данные для доставки
+            своевременно оплатить и принять заказ
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            7. Возврат и обмен
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            В случае получения товара ненадлежащего качества Покупатель имеет право обратиться к Продавцу для замены или
+            решения ситуации.
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            8. Ответственность сторон
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Стороны несут ответственность в соответствии с действующим законодательством Украины.
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            9. Персональные данные
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Оформляя заказ, Покупатель дает согласие на обработку своих персональных данных в соответствии с Политикой
+            конфиденциальности.
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            10. Заключительные положения
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Продавец оставляет за собой право вносить изменения в данную оферту без предварительного уведомления.
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            11. Контактная информация
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Телефон: +38 (XXX) XXX-XX-XX Email: example@gmail.com Адрес: г. Днепр, Украина
+            ФОП ФИО
+            ЕДРПОУ
+        </p>
+
+    </div>
+
+</div>
+<!-- все карточки -->
+
+<!-- смотри еще -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <h4 class="text-2xl font-bold mb-2 font-montserrat text-[#64352A]">
+        Смотрите
+        <span class="text-[#BF0F0F] font-normal">также</span>
+    </h4>
+</div>
+
+
+<!-- смотри еще  -->
+<div class="mt-12 flex flex-wrap justify-center sm:gap-1 gap-2">
+
+    <a href="{% url 'shop:uslovia-dostavki' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Доставка и оплата
+    </a>
+
+    <a href="{% url 'shop:privacy' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Политика конфиденциальности
+    </a>
+
+    <a href="{% url 'shop:offer' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Публичная оферта
+    </a>
+    <a href="{% url 'shop:obmen' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Обмен и возврат
+    </a>
+
+</div>
+<!-- смотри еще  -->
+
+
+
+
+{% endblock %}

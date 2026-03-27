@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My shop{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Marck+Script&display=swap"
+        rel="stylesheet">
+    <!-- htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Alpine.jsAlpine.js — “легкий Vue для маленьких интерактивных частей сайта” меню выпадающие списки -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Подключаем кастомные шрифты через Tailwind config inline -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        marck: ['Marck Script', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<!-- цвет всего текста бэкграунд -->
+
+<body class="bg-[#FFDAB0]">
+    <!-- меню ВСЕГДА будет -->
+    {% include 'include/menu.html' %}
+    {% block content %}
+    {% endblock %}
+    {% include 'include/footer.html' %}
+</body>
+<!-- цвет всего текста бэкграунд -->

@@ -1,0 +1,56 @@
+# --- База Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env/
+.venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# --- Django специфичное ---
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+# Папка collectstatic (сюда Django собирает статику для сервера)
+
+# Папка с загруженными картинками товаров
+
+# --- Секреты (КРИТИЧЕСКИ ВАЖНО) ---
+.env
+.secrets
+*.key
+
+# --- IDE (PyCharm, VS Code, Sublime) ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+
+# --- Операционные системы ---
+.DS_Store
+.DS_Store?
+._*
+Thumsc.db
+desktop.ini
+
+# --- PythonAnywhere и другие инструменты ---
+.pythonanywhere/
+.cache/
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml

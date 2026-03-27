@@ -1,0 +1,219 @@
+{% load static %}
+<nav class="bg-[#64352A] fixed top-0 left-0 w-full z-50">
+    <div class="px-3">
+        <div class="flex justify-between h-16 items-center">
+
+            <!-- Левый блок: Логотип -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="#" class="text-xl font-bold text-red-600"><img src="{% static 'img/Logo.svg' %}"
+                        alt="Logo"></a>
+            </div>
+
+            <!-- Центр: Пункты навигации (десктоп) -->
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="relative px-3 py-2 rounded-md text-sm font-normal
+                            text-[#FFCB90] font-montserrat
+                            {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
+                            hover:text-white transition">
+                    Главная
+                </a>
+                <!-- DROPDOWN -->
+                <div class="relative group">
+                    <button
+                        class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
+                        Категории
+                    </button>
+                    <!-- dropdown menu категории-->
+                    <div class="absolute left-0 top-full w-48 bg-white shadow-lg rounded-md 
+                                opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                                transition duration-200">
+                        <!-- {% for category in categories %}
+                        <a href="{{ category.get_absolute_url }}"
+                            class="block px-4 py-2 text-sm font-normal text-gray-700 
+                                hover:bg-gray-100
+                                {% if request.path == category.get_absolute_url %}bg-gray-200 font-semibold{% endif %}">
+                            {{ category.name }}
+                        </a>
+                        {% endfor %} -->
+                    </div>
+                    <!-- dropdown menu категории-->
+                </div>
+                <a href="{% url 'shop:product_detail' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
+                                text-[#FFCB90] font-montserrat
+                                {% if request.resolver_match.url_name == 'product_detail' %}after:w-full{% endif %}
+                                hover:text-white transition">
+                    Меню
+                </a>
+
+                <!-- дроб даун меню документов -->
+                <div x-data="{ open: false }" class="relative">
+
+                    <!-- КНОПКА -->
+                    <button @mouseenter="open = true" @mouseleave="open = false" class="relative px-3 py-2 rounded-md text-sm font-normal
+                            text-[#FFCB90] font-montserrat hover:text-white transition">
+
+                        Документы
+                    </button>
+
+                    <!-- ВЫПАДАЮЩЕЕ МЕНЮ -->
+                    <div x-show="open" @mouseenter="open = true" @mouseleave="open = false" x-transition class="absolute left-0 mt-2 w-56 
+                                bg-white rounded-xl shadow-lg p-2 z-50">
+
+                        <a href="{% url 'shop:uslovia-dostavki' %}"
+                            class="block px-4 py-2 text-sm text-[#64352A] hover:bg-[#FFDAB0] rounded-lg transition">
+                            Доставка и оплата
+                        </a>
+                        <a href="{% url 'shop:obmen' %}"
+                            class="block px-4 py-2 text-sm text-[#64352A] hover:bg-[#FFDAB0] rounded-lg transition">
+                            Обмен и возврат
+                        </a>
+
+                        <a href="{% url 'shop:privacy' %}"
+                            class="block px-4 py-2 text-sm text-[#64352A] hover:bg-[#FFDAB0] rounded-lg transition">
+                            Политика конфиденциальности
+                        </a>
+
+                        <a href="{% url 'shop:offer' %}"
+                            class="block px-4 py-2 text-sm text-[#64352A] hover:bg-[#FFDAB0] rounded-lg transition">
+                            Публичная оферта
+                        </a>
+
+                    </div>
+
+                </div>
+                <!-- дроб даун меню документов -->
+            </div>
+
+            <!-- Правый блок: Корзина -->
+            <div class="flex items-center space-x-4">
+
+                <!-- Корзина  и аутентификация-->
+                <div class="relative flex items-center space-x-2 flex-row gap-5">
+
+                    {% with total_items=cart|length %}
+                    <a href="" class="flex items-center text-black font-thin text-xl">
+                        <img src="{% static 'image/cart.svg' %}" alt="Cart" class="w-8 h-8">
+                        {% if total_items > 0 %}
+                        <span class="ml-1 font-medium text-xl ">{{ total_items }}</span>
+                        {% endif %}
+                    </a>
+                    {% endwith %}
+                </div>
+                <!-- Правый блок: Корзина -->
+
+                <!-- Бургер меню -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button"
+                        class="relative w-8 h-8 flex flex-col justify-between items-center p-2 text-[#FFCB90] hover:text-[#FEC377] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+
+                        <!-- Линии бургера -->
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Мобильное меню -->
+    <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1 flex flex-col">
+
+        <a href="#" class="relative px-3 py-2 rounded-md text-sm font-normal
+                            text-[#FFCB90] font-montserrat
+                            {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
+                            hover:text-white transition">
+            Главная
+        </a>
+        <div class="relative group">
+            <button
+                class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
+                Категории
+            </button>
+            <!-- dropdown menu категории-->
+            <div class="relative group">
+                <!-- <button class="px-3 py-2 text-sm font-normal text-black rounded-md">
+                    Категории
+                </button> -->
+                <div class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md
+                            opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                            transition-all duration-200 z-50">
+                    <!-- {% for category in categories %}
+                    <a href="{{ category.get_absolute_url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100
+                            {% if request.path == category.get_absolute_url %}bg-gray-200 font-semibold{% endif %}">
+                        {{ category.name }}
+                    </a>
+                    {% endfor %} -->
+                </div>
+            </div>
+            <!-- dropdown menu категории-->
+        </div>
+        <a href="#"
+            class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
+            О нас
+        </a>
+        <a href="#"
+            class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
+            Контакты
+        </a>
+        <!-- дроб даун меню документов -->
+        <div x-data="{ open: false }" class="relative">
+
+            <!-- КНОПКА -->
+            <button @click="open = !open" class="relative px-3 py-2 rounded-md text-sm font-normal
+                    text-[#FFCB90] font-montserrat hover:text-white transition">
+
+                Документы
+            </button>
+
+            <!-- ВЫПАДАЮЩЕЕ МЕНЮ -->
+            <div x-show="open" @click.outside="open = false" x-transition
+                class="mt-2 w-56 bg-white rounded-xl shadow-lg p-2 z-50">
+
+                <a href="#" class="block px-2 py-1 text-gray-700 hover:bg-gray-100">
+                    Доставка и оплата
+                </a>
+
+                <a href="{% url 'shop:offer' %}" class="block px-2 py-1 text-gray-700 hover:bg-gray-100">
+                    Публичная оферта
+                </a>
+
+                <a href="{% url 'shop:privacy' %}" class="block px-2 py-1 text-gray-700 hover:bg-gray-100">
+                    Политика конфиденциальности
+                </a>
+
+                <a href="{% url 'shop:uslovia-dostavki' %}" class="block px-2 py-1 text-gray-700 hover:bg-gray-100">
+                    Условия доставки
+                </a>
+
+            </div>
+
+        </div>
+        <!-- дроб даун меню документов -->
+    </div>
+</nav>
+
+<script>
+    // анимация бургера
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        const lines = btn.querySelectorAll('span');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+
+            // Анимация линий
+            lines[0].classList.toggle('rotate-45');
+            lines[0].classList.toggle('translate-y-2');
+
+            lines[1].classList.toggle('opacity-0');
+
+            lines[2].classList.toggle('-rotate-45');
+            lines[2].classList.toggle('-translate-y-2');
+        });
+    });
+</script>

@@ -1,0 +1,112 @@
+<!----------------футер--------------->
+{% load static %}
+<footer class="bg-[#411F17] text-white py-10 mt-20">
+
+    <div class="max-w-6xl mx-auto px-4 
+                flex flex-col md:flex-row 
+                justify-between gap-10">
+
+        <!-- 🟡 ЛЕВАЯ ЧАСТЬ -->
+        <div class="flex flex-col max-w-sm font-montserrat">
+
+            <!-- Лого -->
+            <img src="{% static 'image/pizza-logo.svg' %}" alt="Logo" class="w-16 h-16 mb-4">
+
+            <!-- Текст -->
+            <p class="text-5xl text-[#FFCB90] font-bold">
+                Доставка
+                горячей пиццы и суши в городе Днепр
+            </p>
+            <div class="flex items-center gap-5 mt-10 flex-row flex-wrap">
+                <a href="#"><img src="{% static 'image/footer-Facebook.svg' %}" alt="letter" class="w-6 h-6"></a>
+                <a href="#"><img src="{% static 'image/footer-Instagram.svg' %}" alt="letter" class="w-6 h-6"></a>
+                <a href="#"><img src="{% static 'image/footer-Telegram.svg' %}" alt="letter" class="w-6 h-6"></a>
+            </div>
+
+        </div>
+
+        <!-- 🔵 ПРАВАЯ ЧАСТЬ -->
+        <div class="flex flex-col sm:mt-[100px] mt-[20px]">
+
+            <div class="flex flex-col gap-2 text-[#FFCB90] text-sm font-montserrat">
+
+                <a href="/" class="hover:text-white transition">
+                    Главная
+                </a>
+
+                <a href="/menu" class="hover:text-white transition">
+                    Суши & Роллы
+                </a>
+
+                <a href="/about" class="hover:text-white transition">
+                    Оплата и доставка
+                </a>
+                <a href="{% url 'shop:offer' %}" class="hover:text-white transition">
+                    Публичный офферта
+                </a>
+                <a href="{% url 'shop:privacy' %}" class="hover:text-white transition">
+                    Политика конфиденциальности
+                </a>
+                <a href="{% url 'shop:uslovia-dostavki' %}" class="hover:text-white transition">
+                    Условия доставки
+                </a>
+                <a href="{% url 'shop:obmen' %}" class="hover:text-white transition">
+                    Обмен и возврат
+                </a>
+                <a href="/contacts" class="hover:text-white transition">
+                    Контакты
+                </a>
+                <p class="text-sm font-bold text-[#FFCB90] mt-4">IBAN: UA483052990000026002050532392</p>
+                <p class="text-sm font-bold text-[#FFCB90]">РНОКПП/ЄДРПОУ: 3552212799</p>
+                <p>БУЯНОВСЬКИЙ ВАСИЛЬ АНДРІЙОВИЧ</p>
+                <p>Днепр, Украина</p>
+                <a href="mailto:[EMAIL_ADDRESS]">
+                    <div class="flex items-center gap-2 mt-10">
+                        <img src="{% static 'image/footer-letter.svg' %}" alt="letter" class="w-6 h-6">
+                        <p>[EMAIL_ADDRESS]</p>
+                    </div>
+                </a>
+                <a href="https://maps.app.goo.gl/5s79781234567890">
+                    <div class="flex items-center gap-2">
+                        <img src="{% static 'image/footer-map.svg' %}" alt="map" class="w-6 h-6">
+                        <p>Dnipro, Ukraine</p>
+                    </div>
+                </a>
+                <a href="tel:+380990160002">
+                    <div class="flex items-center gap-2">
+                        <img src="{% static 'image/footer-phone.svg' %}" alt="phone" class="w-6 h-6">
+                        <p>+380 (99) 016 00 02</p>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4">
+        <hr class="border-t border-[#FFCB90] mt-20 mb-10">
+    </div>
+    <div class="flex flex-row justify-center items-center flex-wrap gap-20">
+        <img src="{% static 'image/visa.svg' %}" alt="visa" class="w-[130px]">
+        <img src="{% static 'image/liqpay.svg' %}" alt="liqpay" class="w-[200px]">
+        <img src="{% static 'image/mastercard.svg' %}" alt="mastercard" class="w-[80px]">
+        <img src="{% static 'image/privat.svg' %}" alt="privat" class="w-[100px]">
+    </div>
+
+    <div class="flex flex-col items-center gap-2 text-center mt-20">
+        <div class="flex flex-row justify-center items-center gap-10 flex-wrap mt-10">
+
+            <a href="https://mars.net.ua/"><img src="{% static 'image/mars.svg' %}" class="w-[100px]"></a>
+            <p class="text-xs text-[#FFCB90]/70 font-montserrat ">
+                © <span id="year"></span> Студия веб-разработки
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</footer>
+<!----------------футер--------------->
