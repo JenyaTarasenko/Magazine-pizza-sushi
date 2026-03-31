@@ -7,7 +7,8 @@ app_name = 'shop'
 urlpatterns = [
   
     path('', views.index, name='index'),#Главная страница
-    path('detail/', views.product_detail, name='product_detail'),#Страница товара
+    path('category/<slug:slug>/', views.category_detail, name='category_detail'),
+    path('product/<slug:slug>/', views.product_detail, name='product_detail'),#Страница товара
     path('privacy/', views.privacy, name='privacy'),#Политика конфиденциальности
     path('uslovia-dostavki/', views.uslovia_dostavki, name='uslovia-dostavki'),#Условия доставки
     path('offer/', views.offer, name='offer'),#Публичная оферта

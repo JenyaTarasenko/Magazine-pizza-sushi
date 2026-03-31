@@ -34,19 +34,34 @@
         <div class="flex flex-col items-center justify-center">
 
             <!-- Картинка -->
-            <img src="{% static 'image/pizza.png' %}" alt="Pizza"
+            <img src="{{ product.image.url }}" alt="{{ product.name }}"
                 class="w-full max-w-[500px] h-auto object-contain mb-6" loading="lazy">
             <!-- Картинка -->
             <div class="flex flex-row flex-wrap gap-10 justify-center items-center">
+                {% with parent=product.category.parent %}
+
+                <!-- ПИЦЦА -->
+                {% if product.category.slug == 'pizza' or parent and parent.slug == 'pizza' %}
                 <div class="flex flex-row gap-5 justify-center items-center">
                     <img src="{% static 'image/deametr1.svg' %}" class="w-8 h-8">
-                    <p class="text-[#64352A] font-montserrat text-4xl max-w-md text-left">30<span
-                            class="font-normal text-lg">см</span></p>
+                    <p class="text-[#64352A] font-montserrat text-4xl max-w-md text-left">
+                        30<span class="font-normal text-lg">см</span>
+                    </p>
                 </div>
+                {% endif %}
+
+                <!-- СУШИ -->
+                {% if product.category.slug == 'sushi' or parent and parent.slug == 'sushi' %}
+                <p class="text-[#64352A] font-montserrat text-4xl max-w-md text-left font-normal">
+                    {{ product.category.name }}
+                </p>
+                {% endif %}
+
+                {% endwith %}
 
                 <div class="flex flex-row gap-5 justify-center items-center">
-                    <p class="text-[#64352A] font-montserrat text-4xl max-w-md text-left">250<span
-                            class="font-normal text-lg">гр</span></p>
+                    <p class="text-[#64352A] font-montserrat text-4xl max-w-md text-left">{{ product.weight }}<span
+                            class="font-normal text-lg"> грамм</span></p>
                 </div>
             </div>
 
@@ -58,19 +73,16 @@
 
             <!-- Текст -->
             <h1 class="text-3xl font-bold text-[#64352A] mb-4 font-montserrat">
-                Пепперони Пицца с колбасками пепперони и сыром моцарелла.
+                {{ product.name }}
             </h1>
             <p class="text-[#64352A] text-xl font-montserrat mb-5 font-bold">Состав :</p>
 
             <h2 class="text-[#64352A] text-sm mb-6 font-montserrat">
-                Пицца с колбасками пепперони и сыром моцарелла.
-                Пицца с колбасками пепперони и сыром моцарелла. Пицца с колбасками пепперони и сыром моцарелла. Пицца с
-                колбасками пепперони и сыром моцарелла. Пицца с колбасками пепперони и сыром моцарелла. Пицца с
-                колбасками пепперони и сыром моцарелла. Пицца с колбасками пепперони и сыром моцарелла.
+                {{ product.description }}
             </h2>
             <p class="text-[#64352A] text-xl font-montserrat mb-5 font-bold">Цена :</p>
             <h4 class="text-[#64352A] text-5xl mb-6 font-montserrat">
-                250 <span class="font-normal text-lg">грн</span>
+                {{ product.price|floatformat:0 }} <span class="font-normal text-lg">грн</span>
             </h4>
 
             <!-- Кнопки -->
@@ -101,157 +113,21 @@
 <!-- Бдетальная страница товара -->
 
 <!----------------Текст-------------- -->
-<div class="flex items-center justify-center mt-20 mb-20 flex-row px-1">
-    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Топ
-        <span class="text-[#BF0F0F] font-normal">продаж</span>
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/additions.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">
+        Добавки
     </h4>
 </div>
+
 <!----------------Текст-------------- -->
-<!----------------карточка пицца ---------------->
-<div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
-
-    <a href="/product/1" class="block w-[260px]  transition duration-300 hover:scale-105 active:scale-95">
-
-        <!-- 📦 КАРТОЧКА -->
-        <div class="relative pt-[100px] px-6 pb-6 font-montserrat 
-                    flex flex-col items-center text-center 
-                    bg-[#B11D1D] rounded-[50px]">
-
-            <!-- 🖼 Картинка -->
-            <img src="{% static 'image/pizza.png' %}" class="w-[200px] h-[200px] object-cover 
-                    absolute -top-[80px] left-1/2 -translate-x-1/2">
-
-            <!-- Контент -->
-            <h3 class="text-2xl font-bold mt-2 text-white line-clamp-1">
-                Пепперони
-            </h3>
-
-            <p class="mb-4 text-sm line-clamp-3 text-[#F6BE51]">
-                Классическая пицца с томатным соусом и сыром моцарелла
-            </p>
-
-            <div class="flex items-center gap-2">
-                <img src="{% static 'image/deametr.svg' %}" class="w-6 h-6">
-                <p class="text-lg text-white">30 см</p>
-            </div>
-
-            <p class="text-sm text-green-500 mt-5">Есть в наличии</p>
-
-            <div class="flex items-center gap-4 mt-5">
-                <p class="text-3xl font-bold text-yellow-400">
-                    199 <span class="text-sm font-normal">грн</span>
-                </p>
-
-                <button class="px-6 py-2 rounded-full 
-                    bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 
-                    text-white font-semibold
-                    hover:scale-105 active:scale-95 transition">
-                    <img src="{% static 'image/card.svg' %}" class="w-5 h-5">
-                </button>
-            </div>
-
-        </div>
-
-    </a>
-
-    <a href="/product/1" class="block w-[260px]  transition duration-300 hover:scale-105 active:scale-95">
-
-        <!-- 📦 КАРТОЧКА -->
-        <div class="relative pt-[100px] px-6 pb-6 font-montserrat 
-                    flex flex-col items-center text-center 
-                    bg-[#B11D1D] rounded-[50px]">
-
-            <!-- 🖼 Картинка -->
-            <img src="{% static 'image/pizza.png' %}" class="w-[200px] h-[200px] object-cover 
-                    absolute -top-[80px] left-1/2 -translate-x-1/2">
-
-            <!-- Контент -->
-            <h3 class="text-2xl font-bold mt-2 text-white line-clamp-1">
-                Пепперони
-            </h3>
-
-            <p class="mb-4 text-sm line-clamp-3 text-[#F6BE51]">
-                Классическая пицца с томатным соусом и сыром моцарелла
-            </p>
-
-            <div class="flex items-center gap-2">
-                <img src="{% static 'image/deametr.svg' %}" class="w-6 h-6">
-                <p class="text-lg text-white">30 см</p>
-            </div>
-
-            <p class="text-sm text-green-500 mt-5">Есть в наличии</p>
-
-            <div class="flex items-center gap-4 mt-5">
-                <p class="text-3xl font-bold text-yellow-400">
-                    199 <span class="text-sm font-normal">грн</span>
-                </p>
-
-                <button class="px-6 py-2 rounded-full 
-                    bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 
-                    text-white font-semibold
-                    hover:scale-105 active:scale-95 transition">
-                    <img src="{% static 'image/card.svg' %}" class="w-5 h-5">
-                </button>
-            </div>
-
-        </div>
-
-    </a>
-
-
-    <a href="/product/1" class="block w-[260px]  transition duration-300 hover:scale-105 active:scale-95">
-
-        <!-- 📦 КАРТОЧКА -->
-        <div class="relative pt-[100px] px-6 pb-6 font-montserrat 
-                    flex flex-col items-center text-center 
-                    bg-[#B11D1D] rounded-[50px]">
-
-            <!-- 🖼 Картинка -->
-            <img src="{% static 'image/pizza.png' %}" class="w-[200px] h-[200px] object-cover 
-                    absolute -top-[80px] left-1/2 -translate-x-1/2">
-
-            <!-- Контент -->
-            <h3 class="text-2xl font-bold mt-2 text-white line-clamp-1">
-                Пепперони
-            </h3>
-
-            <p class="mb-4 text-sm line-clamp-3 text-[#F6BE51]">
-                Классическая пицца с томатным соусом и сыром моцарелла
-            </p>
-
-            <div class="flex items-center gap-2">
-                <img src="{% static 'image/deametr.svg' %}" class="w-6 h-6">
-                <p class="text-lg text-white">30 см</p>
-            </div>
-
-            <p class="text-sm text-green-500 mt-5">Есть в наличии</p>
-
-            <div class="flex items-center gap-4 mt-5">
-                <p class="text-3xl font-bold text-yellow-400">
-                    199 <span class="text-sm font-normal">грн</span>
-                </p>
-
-                <button class="px-6 py-2 rounded-full 
-                    bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 
-                    text-white font-semibold
-                    hover:scale-105 active:scale-95 transition">
-                    <img src="{% static 'image/card.svg' %}" class="w-5 h-5">
-                </button>
-            </div>
-
-        </div>
-
-    </a>
-
+{% if extras %}
+<div class="flex flex-row items-center justify-center mt-10 gap-5 flex-wrap mb-10">
+    {% for product_extra in extras %}
+    {% include 'include/product_extra.html' with product_extra=product_extra %}
+    {% endfor %}
 </div>
-<div class="flex items-center justify-center mt-20 flex-row px-1 text-center mb-10">
-    <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-        Вся пицца
-    </a>
-
-</div>
-<!----------------карточка пицца ---------------->
+{% endif %}
 <!----------------как заказать--------------->
 <!----------------Текст-------------- -->
 <div class="flex items-center justify-center mt-20 flex-col px-1 text-center">

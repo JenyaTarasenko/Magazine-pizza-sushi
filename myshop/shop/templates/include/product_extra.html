@@ -1,0 +1,21 @@
+{% load static %}
+<div class="w-[300px] bg-[#FE9C1C]/60 rounded-[80px] overflow-hidden flex flex-col items-center text-center p-4">
+
+    <!-- 🖼 Картинка -->
+    <img src="{{ product_extra.image.url }}" alt="Пицца доставка" class="w-20 h-20 object-cover" loading="lazy">
+
+    <!-- 📄 Текст -->
+    <h3 class="text-2xl font-bold text-[#64352A] mt-4">{{ product_extra.name }}</h3>
+    <p class="text-sm text-[#64352A] mt-2 line-clamp-2">
+        {{ product_extra.weight }} г
+    </p>
+    <p class="text-sm text-[#64352A] mt-2 line-clamp-2">
+        {{ product_extra.price|floatformat:0 }} грн
+    </p>
+
+    <a href="/menu" class="inline-block mt-5 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
+        В корзину
+    </a>
+
+</div>
