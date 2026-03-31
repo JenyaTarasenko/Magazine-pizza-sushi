@@ -25,3 +25,9 @@ def cart(request):
 
 def product_list_pizza(request):
     return render(request, 'shop/product/product-list-pizza.html')
+
+def product_list_sushi(request):
+    return render(request, 'shop/product/product-list-sushi.html')
+
+def additions_list(request):
+    return render(request, 'shop/product/product-list-additions.html')
