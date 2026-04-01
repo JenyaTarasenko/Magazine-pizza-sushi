@@ -88,20 +88,24 @@
             <!-- Кнопки -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
 
-                <!-- Кнопка 1 -->
-                <a href="/contacts" class="px-6 py-3 rounded-full 
+
+                <a href="/con" class="px-6 py-3 rounded-full 
                           border-2 border-[#64352A] text-[#64352A]
                           hover:bg-[#64352A] hover:text-white transition text-center">
                     Уточнить заказ
                 </a>
+                <form action="{% url 'cart:cart_add' product.id %}" method="post" class="inline-block">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="override" value="False">
+                    <button type="submit" class="px-6 py-3 rounded-full 
+                            border-2 border-[#64352A] text-[#64352A]
+                            hover:bg-[#64352A] hover:text-white transition text-center">
+                        Добавить в корзину
+                    </button>
+                </form>
 
 
-                <!-- Кнопка 2 -->
-                <a href="/contacts" class="px-6 py-3 rounded-full 
-                          border-2 border-[#64352A] text-white bg-[#64352A]
-                          hover:bg-[#04C311] hover:text-[#64352A] transition text-center">
-                    Добавить в корзину
-                </a>
 
             </div>
 

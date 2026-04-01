@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    
     'shop.apps.ShopConfig',#приложенеие
+    'cart.apps.CartConfig', #Приложение корзины 
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Это ключ, который будет использоваться для хранения корзины в поль- зовательском сеансе
+CART_SESSION_ID = 'cart'

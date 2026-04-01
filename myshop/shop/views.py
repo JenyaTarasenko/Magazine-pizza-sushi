@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Product, Category
 from django.shortcuts import get_object_or_404
+from cart.forms import CartAddProductForm
+from django.db.models import Q
 
 
 # главная страница 
@@ -42,6 +44,10 @@ def category_detail(request, slug):
 
     # Все дочерние категории (если есть)
     children = category.children.all()
+    cart_product_form = CartAddProductForm()
+
+  
+    products_extra = Product.objects.filter(category=category, is_extra=True)
 
     # Если есть дочерние категории, собираем все продукты в один список
     if children.exists():
@@ -52,12 +58,16 @@ def category_detail(request, slug):
     # Топпинги
     products_extra = Product.objects.filter(category=category, is_extra=True)
 
+
     context = {
         'category': category,
         'products_main': products_main,
         'products_extra': products_extra,
+        'cart_product_form': cart_product_form,
+
     }
     return render(request, 'shop/product/category_detail.html', context)
+    
 
 
 
@@ -66,10 +76,13 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     # доп. продукты (сыр, соусы и т.д.)
     extras = product.extras.all()
+    # форма для добавления в корзину
+    cart_product_form = CartAddProductForm()
 
     context = {
         'product': product,
         'extras': extras,
+        'cart_product_form': cart_product_form,
     }
 
     return render(request, 'shop/product/product_detail.html', context)

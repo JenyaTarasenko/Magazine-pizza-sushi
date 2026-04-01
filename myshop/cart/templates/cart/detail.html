@@ -1,11 +1,11 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block title %}Корзина{% endblock %}
+{% block title %}Корзина - Pizza Fun{% endblock %}
 
 {% block content %}
 
-<div class="max-w-6xl mx-auto px-4 py-10 mt-20">
+<div class="max-w-6xl px-4 py-10 mt-20">
 
 
     <div id="cart-container">
@@ -22,19 +22,20 @@
                 <!-- Картинка -->
                 <div class="relative">
 
-                    <a href="">
-                        <img src="{% static 'image/pizza.png' %}"
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
                             class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded">
                     </a>
 
                     <!-- Удалить -->
-                    <form hx-post="" hx-target="#cart-container" hx-swap="innerHTML" class="absolute top-1 right-1">
+                    <form hx-post="{% url 'cart:cart_remove' product.id %}" hx-target="#cart-container"
+                        hx-swap="innerHTML" class="absolute top-1 right-1">
 
                         {% csrf_token %}
 
                         <button
                             class="bg-white shadow rounded-full w-7 h-7 flex items-center justify-center text-red-500 hover:text-red-700">
-                            <img src="{% static 'img/Trash.svg' %}" class="w-4 h-4">
+                            <img src="{% static 'image/Trash.svg' %}" class="w-4 h-4">
                         </button>
 
                     </form>
@@ -45,19 +46,20 @@
                 <!-- Информация -->
                 <div class="flex-1 flex flex-col justify-between">
 
-                    <a href="" class="text-lg uppercase font-light">
-                        Пепперони Пицца с колбасками пепперони и сыром моцарелла.
+                    <a href="{{ product.get_absolute_url }}" class="text-lg uppercase font-light">
+                        {{ product.name }}
                     </a>
 
 
                     <!-- Цена -->
                     <div class="text-gray-700 font-thin">
-                        250 грн
+                        ${{ item.price }}
                     </div>
 
 
                     <!-- Количество -->
-                    <form hx-post="" hx-target="#cart-container" hx-swap="innerHTML" class="flex items-center mt-3">
+                    <form hx-post="{% url 'cart:cart_add' product.id %}" hx-target="#cart-container" hx-swap="innerHTML"
+                        class="flex items-center mt-3">
 
                         {% csrf_token %}
 
@@ -85,7 +87,7 @@
                 <div class="flex flex-col items-end justify-between">
 
                     <div class="text-black font-semibold text-2xl">
-                        $
+                        ${{ item.total_price }}
                     </div>
 
                 </div>
@@ -107,11 +109,12 @@
 
             <div class="flex gap-4 flex-row flex-wrap items-center justify-center mt-5 sm:mt-0">
 
-                <a href="" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-[250px] text-center uppercase">
+                <a href="{% url 'shop:index' %}"
+                    class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-[250px] text-center uppercase">
                     Продолжить покупки
                 </a>
 
-                <a href=""
+                <a href="/"
                     class="px-6 py-2 bg-black text-white rounded hover:bg-green-600 hover:text-black w-full sm:w-[250px] text-center uppercase">
                     Оформить заказ
                 </a>
@@ -122,11 +125,9 @@
 
         {% else %}
         <div class="flex flex-col items-center justify-center">
-            <p class="text-2xl font-bold mb-2 font-montserrat text-[#64352A]">Ваша корзина пуста</p>
-            <a href="/" class="px-5 py-2 rounded-full 
-              border border-[#64352A] text-[#64352A]
-              hover:bg-[#64352A] hover:text-white 
-              transition font-montserrat text-sm mt-5">
+            <p class="text-gray-500 font-thin text-2xl">Корзина пустая</p>
+            <a href=""
+                class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-[250px] text-center uppercase mt-5">
                 Продолжить покупки
             </a>
         </div>
