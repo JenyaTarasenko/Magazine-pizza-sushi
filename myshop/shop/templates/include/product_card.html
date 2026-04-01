@@ -10,11 +10,11 @@
                     absolute -top-[80px] left-1/2 -translate-x-1/2">
 
         <!-- Контент -->
-        <h3 class="text-2xl font-bold mt-2 text-white line-clamp-1">
+        <h3 class="text-lg font-bold mt-2 text-white line-clamp-1">
             {{ product.name }}
         </h3>
 
-        <p class="mb-4 text-sm line-clamp-3 text-[#F6BE51]">
+        <p class="mt-5 text-sm line-clamp-3 text-[#F6BE51] line-clamp-3">
             {{ product.description }}
         </p>
 
@@ -22,7 +22,7 @@
 
         {% if product.category.slug == 'pizza' or parent.slug == 'pizza' %}
         <!-- 🍕 ПИЦЦА -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 mt-5">
             <img src="{% static 'image/deametr.svg' %}" class="w-6 h-6">
             <p class="text-lg text-white">30 см</p>
         </div>
@@ -35,7 +35,7 @@
 
         {% endwith %}
 
-        <p class="text-sm text-green-500 mt-5">Есть в наличии</p>
+        <p class="text-sm text-green-500 mt-5 font-bold">В наличии</p>
 
         <div class="flex items-center gap-4 mt-5">
             <p class="text-2xl font-bold text-yellow-400">

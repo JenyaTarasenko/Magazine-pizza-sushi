@@ -29,6 +29,14 @@ def index(request):
     }
     return render(request, 'shop/product/index.html', context)
 
+
+
+
+# так можно обращатся к категории допустим пицца или суши {% url 'shop:category_detail' 'pizza' %}
+#  или {% url 'shop:category_detail' 'sushi' %} а любой части сайта  сама страница постороена одна 
+# для пиццы и суши через {% if category.slug == 'pizza' %}  {% endif %} {% if category.slug == 'sushi' %}  {% endif %}
+# это дает гибкаость в работе и дает правельную практику 
+
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
 
@@ -51,7 +59,8 @@ def category_detail(request, slug):
     }
     return render(request, 'shop/product/category_detail.html', context)
 
-# детальная страница товара
+
+
 def product_detail(request, slug):
     # получаем продукт по слагу
     product = get_object_or_404(Product, slug=slug)
