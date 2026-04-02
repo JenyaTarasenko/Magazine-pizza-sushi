@@ -31,6 +31,19 @@
             }
         }
     </script>
+    <!-- Этот стиль убирает стрелочки у input type="number"  в cart/detail.html-->
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            /* Firefox */
+        }
+    </style>
 </head>
 <!-- цвет всего текста бэкграунд -->
 
@@ -39,6 +52,12 @@
     {% include 'include/menu.html' %}
     {% block content %}
     {% endblock %}
+    <!-- футер исключаем из корзины чтобы не дублировался при пересчете-->
+    {% if request.resolver_match.url_name not in 'cart_detail cart_add cart_remove' %}
     {% include 'include/footer.html' %}
+    {% endif %}
+
+
+
 </body>
 <!-- цвет всего текста бэкграунд -->

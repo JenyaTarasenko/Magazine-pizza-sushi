@@ -1,25 +1,29 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block title %}Корзина - Pizza Fun{% endblock %}
+{% block title %}Корзина{% endblock %}
 
 {% block content %}
 
-<div class="max-w-6xl px-4 py-10 mt-20">
+<div class="max-w-6xl px-4 mx-auto py-10 mt-20">
 
 
     <div id="cart-container">
+        <div class="flex items-center justify-center gap-4 mb-10 sm:mt-0">
+            <h1 class="text-4xl font-bold text-center text-[#64352A] font-montserrat uppercase">Корзина</h1>
+            <img src="{% static 'image/Cart2.svg' %}" class="w-10 h-10">
+        </div>
 
         {% if cart %}
 
-        <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-8 mt-0 sm:mt-10">
 
             {% for item in cart %}
             {% with product=item.product %}
 
-            <div class="flex flex-col sm:flex-row gap-6 border-b pb-6">
+            <div class="flex flex-col sm:flex-row gap-6 border-b pb-6 border-[#64352A]/50 font-montserrat ">
 
-                <!-- Картинка -->
+                {% comment %} Блок с картинкой {% endcomment %}
                 <div class="relative">
 
                     <a href="{{ product.get_absolute_url }}">
@@ -27,7 +31,7 @@
                             class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded">
                     </a>
 
-                    <!-- Удалить -->
+                    {% comment %} Кнопка удаления {% endcomment %}
                     <form hx-post="{% url 'cart:cart_remove' product.id %}" hx-target="#cart-container"
                         hx-swap="innerHTML" class="absolute top-1 right-1">
 
@@ -43,36 +47,39 @@
                 </div>
 
 
-                <!-- Информация -->
+                {% comment %} Блок с информацией {% endcomment %}
                 <div class="flex-1 flex flex-col justify-between">
 
-                    <a href="{{ product.get_absolute_url }}" class="text-lg uppercase font-light">
+                    <a href="{{ product.get_absolute_url }}"
+                        class="text-2xl uppercase font-montserrat font-bold text-[#64352A]">
                         {{ product.name }}
                     </a>
 
 
-                    <!-- Цена -->
-                    <div class="text-gray-700 font-thin">
-                        ${{ item.price }}
+                    {% comment %} Блок с ценой {% endcomment %}
+                    <div class="text-gray-700 font-thin text-2xl text-[#64352A]/90">
+                        {{ item.price|floatformat:0 }} <span class="text-sm">грн</span>
                     </div>
 
 
-                    <!-- Количество -->
+                    {% comment %} Блок с количеством {% endcomment %}
                     <form hx-post="{% url 'cart:cart_add' product.id %}" hx-target="#cart-container" hx-swap="innerHTML"
                         class="flex items-center mt-3">
 
                         {% csrf_token %}
 
                         <button type="button" onclick="this.nextElementSibling.stepDown(); this.form.requestSubmit();"
-                            class="px-3 py-1 border border-gray-200 hover:bg-gray-200 rounded-full">
+                            class="px-3 py-1 border border-[#64352A] hover:bg-[#64352A] hover:text-white rounded-full">
                             −
                         </button>
 
+                        {% comment %} лишиние стили убираем {% endcomment %}
                         <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
-                            class="w-12 text-center outline-none" onchange="this.form.requestSubmit()">
+                            class="w-12 text-center outline-none bg-transparent border-none appearance-none"
+                            onchange="this.form.requestSubmit()">
 
                         <button type="button" onclick="this.previousElementSibling.stepUp(); this.form.requestSubmit();"
-                            class="px-3 py-1 border border-gray-200 hover:bg-gray-300 rounded-full ">
+                            class="px-3 py-1 border border-[#64352A] hover:bg-[#64352A] hover:text-white rounded-full ">
                             +
                         </button>
 
@@ -83,11 +90,11 @@
                 </div>
 
 
-                <!-- Сумма -->
+                {% comment %} Блок с суммой {% endcomment %}
                 <div class="flex flex-col items-end justify-between">
 
-                    <div class="text-black font-semibold text-2xl">
-                        ${{ item.total_price }}
+                    <div class="text-black font-semibold text-4xl font-montserrat text-[#64352A]/90">
+                        {{ item.total_price|floatformat:0 }} <span class="text-sm">грн</span>
                     </div>
 
                 </div>
@@ -100,22 +107,26 @@
         </div>
 
 
-        <!-- Итог -->
-        <div class="flex flex-col sm:flex-row sm:justify-between justify-center items-center mt-10 gap-4 flex-wrap">
+        {% comment %} Блок с итоговой суммой {% endcomment %}
+        <div
+            class="flex flex-col sm:flex-row sm:justify-between justify-center items-center mt-10 gap-4 flex-wrap font-montserrat">
 
-            <div class="text-3xl font-bold text-black">
-                <span class="text-gray-500 text-lg font-thin">Итого:</span> ${{ cart.get_total_price }}
+            <div class="text-4xl font-bold text-[#64352A]">
+                <span class="font-medium text-[#64352A]/90 text-lg">Общая сумма:</span>
+                {{ cart.get_total_price|floatformat:0 }} <span class="text-sm text-[#64352A] font-normal">грн</span>
             </div>
 
             <div class="flex gap-4 flex-row flex-wrap items-center justify-center mt-5 sm:mt-0">
 
-                <a href="{% url 'shop:index' %}"
-                    class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-[250px] text-center uppercase">
-                    Продолжить покупки
+                <a href="{% url 'shop:index' %}" class="px-6 py-3 rounded-full 
+                          border-2 border-[#64352A] text-[#64352A]
+                          hover:bg-[#64352A] hover:text-white transition text-center">
+                    Вернуться в магазин
                 </a>
 
-                <a href="/"
-                    class="px-6 py-2 bg-black text-white rounded hover:bg-green-600 hover:text-black w-full sm:w-[250px] text-center uppercase">
+                <a href="/" class="px-6 py-3 rounded-full 
+                            border-2 border-[#64352A] text-[#64352A]
+                            hover:bg-[#64352A] hover:text-white transition text-center">
                     Оформить заказ
                 </a>
 
@@ -125,10 +136,11 @@
 
         {% else %}
         <div class="flex flex-col items-center justify-center">
-            <p class="text-gray-500 font-thin text-2xl">Корзина пустая</p>
-            <a href=""
-                class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-[250px] text-center uppercase mt-5">
-                Продолжить покупки
+            <p class="font-thin text-2xl font-montserrat mb-10 text-[#64352A]/40">Корзина пустая</p>
+            <a href="{% url 'shop:index' %}" class="px-6 py-3 rounded-full 
+                          border-2 border-[#64352A] text-[#64352A]
+                          hover:bg-[#64352A] hover:text-white transition text-center">
+                Вернуться в магазин
             </a>
         </div>
 
@@ -138,5 +150,7 @@
     </div>
 
 </div>
+
+
 
 {% endblock %}

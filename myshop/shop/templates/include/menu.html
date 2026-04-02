@@ -11,20 +11,13 @@
 
             <!-- Центр: Пункты навигации (десктоп) -->
             <div class="hidden md:flex space-x-6">
-                <a href="#" class="relative px-3 py-2 rounded-md text-sm font-normal
+                <a href="{% url 'shop:index' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
                             {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
                             hover:text-white transition">
                     Главная
                 </a>
-                <!-- DROPDOWN -->
-                <div class="relative group">
-                    <button
-                        class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
-                        Категории
-                    </button>
 
-                </div>
                 <a href="/menu" class="relative px-3 py-2 rounded-md text-sm font-normal
                                 text-[#FFCB90] font-montserrat
                                 {% if request.resolver_match.url_name == 'product_detail' %}after:w-full{% endif %}
@@ -75,13 +68,15 @@
             <div class="flex items-center space-x-4">
 
                 <!-- Корзина  и аутентификация-->
+
+                <!-- Корзина  и аутентификация-->
                 <div class="relative flex items-center space-x-2 flex-row gap-5">
 
                     {% with total_items=cart|length %}
-                    <a href="" class="flex items-center text-black font-thin text-xl">
-                        <img src="{% static 'image/cart.svg' %}" alt="Cart" class="w-8 h-8">
+                    <a href="{% url 'cart:cart_detail' %}" class="flex items-center text-black font-thin text-xl">
+                        <img src="{% static 'image/cart.svg' %}" alt="Cart" class="w-7 h-7">
                         {% if total_items > 0 %}
-                        <span class="ml-1 font-medium text-xl ">{{ total_items }}</span>
+                        <span class="ml-1 font-medium text-xl text-[#FFCB90]">{{ total_items }}</span>
                         {% endif %}
                     </a>
                     {% endwith %}

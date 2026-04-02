@@ -5,40 +5,22 @@ from .cart import Cart
 from .forms import CartAddProductForm
 
 
+
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-
-    # Если пришла форма (основной продукт)
-    if 'quantity' in request.POST:
-        form = CartAddProductForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            cart.add(product=product,
-                     quantity=cd['quantity'],
-                     override_quantity=cd['override'])
-    else:
-        # Для топпинга: quantity=1, override=False
-        cart.add(product=product, quantity=1, override_quantity=False)
-
+    form = CartAddProductForm(request.POST)
+    # print("POST DATA:", request.POST)   # проверка логов
+    # print("FORM VALID:", form.is_valid())  # проверка логов
+    # print("FORM ERRORS:", form.errors)  # проверка логов
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add(product=product,
+                 quantity=cd['quantity'],
+                 override_quantity=cd['override'])
     return redirect('cart:cart_detail')
-
-
-# @require_POST
-# def cart_add(request, product_id):
-#     cart = Cart(request)
-#     product = get_object_or_404(Product, id=product_id)
-#     form = CartAddProductForm(request.POST)
-#     # print("POST DATA:", request.POST)   # проверка логов
-#     # print("FORM VALID:", form.is_valid())  # проверка логов
-#     # print("FORM ERRORS:", form.errors)  # проверка логов
-#     if form.is_valid():
-#         cd = form.cleaned_data
-#         cart.add(product=product,
-#                  quantity=cd['quantity'],
-#                  override_quantity=cd['override'])
-#     return redirect('cart:cart_detail')
+  
 
 
 @require_POST
@@ -49,6 +31,7 @@ def cart_remove(request, product_id):
     return redirect('cart:cart_detail')
 
 
+
 def cart_detail(request):
     cart = Cart(request)
     for item in cart:
@@ -56,3 +39,4 @@ def cart_detail(request):
                             'quantity': item['quantity'],
                             'override': True})
     return render(request, 'cart/detail.html', {'cart': cart})
+  
