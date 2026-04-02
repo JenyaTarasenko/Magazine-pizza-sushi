@@ -91,7 +91,7 @@
 
                 <a href="/con" class="px-6 py-3 rounded-full 
                           border-2 border-[#64352A] text-[#64352A]
-                          hover:bg-[#64352A] hover:text-white transition text-center">
+                          hover:bg-[#64352A] hover:text-white transition text-center w-[220px]">
                     Уточнить заказ
                 </a>
                 <form action="{% url 'cart:cart_add' product.id %}" method="post" class="inline-block">
@@ -100,7 +100,7 @@
                     <input type="hidden" name="override" value="False">
                     <button type="submit" class="px-6 py-3 rounded-full 
                             border-2 border-[#64352A] text-[#64352A]
-                            hover:bg-[#64352A] hover:text-white transition text-center">
+                            hover:bg-[#64352A] hover:text-white transition text-center w-[220px]">
                         Добавить в корзину
                     </button>
                 </form>
