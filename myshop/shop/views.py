@@ -13,6 +13,7 @@ def index(request):
     # Новинки: последние 4 пиццы и последние 4 суши
     pizza_category = Category.objects.filter(slug='pizza').first()
     sushi_category = Category.objects.filter(slug='sushi').first()
+    napitki_category = Category.objects.filter(slug='napitki').first()
 
     new_pizzas = Product.objects.filter(
         category__in=pizza_category.children.all() | Category.objects.filter(id=pizza_category.id),
@@ -24,10 +25,16 @@ def index(request):
         is_extra=False
     ).order_by('-created')[:4] if sushi_category else []
 
+    new_napitki = Product.objects.filter(
+        category__in=napitki_category.children.all() | Category.objects.filter(id=napitki_category.id),
+        is_extra=False
+    ).order_by('-created')[:4] if napitki_category else []
+
     context = {
         'categories': categories,
         'new_pizzas': new_pizzas,
         'new_sushis': new_sushis,
+        'new_napitki': new_napitki,
     }
     return render(request, 'shop/product/index.html', context)
 
@@ -45,8 +52,8 @@ def category_detail(request, slug):
     # Все дочерние категории (если есть)
     children = category.children.all()
     cart_product_form = CartAddProductForm()
-
-  
+    # вытягиваем категориикроме дочерних
+    categories = Category.objects.filter(parent__isnull=True)
     products_extra = Product.objects.filter(category=category, is_extra=True)
 
     # Если есть дочерние категории, собираем все продукты в один список
@@ -64,6 +71,7 @@ def category_detail(request, slug):
         'products_main': products_main,
         'products_extra': products_extra,
         'cart_product_form': cart_product_form,
+        'categories': categories,
 
     }
     return render(request, 'shop/product/category_detail.html', context)
@@ -78,11 +86,14 @@ def product_detail(request, slug):
     extras = product.extras.all()
     # форма для добавления в корзину
     cart_product_form = CartAddProductForm()
-
+    # вытягиваем категориикроме дочерних
+    categories = Category.objects.filter(parent__isnull=True)
+    
     context = {
         'product': product,
         'extras': extras,
         'cart_product_form': cart_product_form,
+        'categories': categories,
     }
 
     return render(request, 'shop/product/product_detail.html', context)

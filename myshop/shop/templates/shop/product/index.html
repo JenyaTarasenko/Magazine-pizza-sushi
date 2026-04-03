@@ -263,31 +263,20 @@
 
 </div>
 <!---------------- компонент меню-------------- -->
-<!----------------Текст-------------- -->
+
+<!-- универсальный компонент категории -->
 <div class="flex items-center justify-center mt-20 mb-20 flex-row px-1">
     <h4 class="text-4xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A] text-center">Пицца
         <span class="text-[#BF0F0F] font-normal">суши &
             роллы</span>
     </h4>
 </div>
-<!----------------Текст-------------- -->
-
-<!---------------- компонент категории-------------- -->
 <div class="flex items-center justify-center mt-20 gap-10 mb-10">
     <div class="bg-[#FFCB90] rounded-[50px] overflow-hidden ">
         <!-- Внутренний блок с текстом и padding -->
         <div class="p-6 text-center flex flex-row flex-wrap justify-center items-center gap-20">
             {% for category in categories %}
-            <div class="flex flex-col justify-center items-center">
-                <img src="{{ category.image.url }}" class="w-40 h-40 mb-4 ml-auto" alt="{{ category.name }}"
-                    loading="lazy">
-                <h3 class="text-lg font-normal mb-2 font-montserrat text-[#64352A] uppercase">{{ category.name }}</h2>
-                    <a href="{{ category.get_absolute_url }}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                            hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                        Смотреть меню
-                    </a>
-
-            </div>
+            {% include 'include/category.html' %}
             {% endfor %}
         </div>
     </div>
@@ -399,6 +388,22 @@
 </div>
 <div class="flex items-center justify-center mt-20 flex-row px-1 text-center mb-10">
     <a href="{% url 'shop:category_detail' 'pizza' %}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
+        Вся пицца
+    </a>
+
+</div>
+<!----------------карточка пицца ---------------->
+<!----------------карточка пицца ---------------->
+<div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
+
+    {% for product in new_napitki %}
+    {% include 'include/product_card.html' with product=product category=category %}
+    {% endfor %}
+
+</div>
+<div class="flex items-center justify-center mt-20 flex-row px-1 text-center mb-10">
+    <a href="{% url 'shop:category_detail' 'napitki' %}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
         Вся пицца
     </a>

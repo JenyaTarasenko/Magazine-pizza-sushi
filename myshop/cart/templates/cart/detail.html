@@ -43,7 +43,7 @@
 
                     <a href="{{ product.get_absolute_url }}">
                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
-                            class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded">
+                            class="w-32 h-32 sm:w-40 sm:h-40 object-contain">
                     </a>
 
                     {% comment %} Кнопка удаления {% endcomment %}
@@ -74,6 +74,10 @@
                     {% comment %} Блок с ценой {% endcomment %}
                     <div class="text-gray-700 font-thin text-2xl text-[#64352A]/90">
                         {{ item.price|floatformat:0 }} <span class="text-sm">грн</span>
+                    </div>
+                    {% comment %} Блок с ценой {% endcomment %}
+                    <div class="text-gray-700 font-thin text-lg text-[#64352A]/70">
+                        {{ product.weight }} <span class="text-sm">грамм</span>
                     </div>
 
 

@@ -176,6 +176,91 @@
         </div>
 
 </section>
+{% elif category.slug == 'napitki' %}
+<!-- экран дестоп -->
+<section class="hidden md:block relative h-screen">
+
+
+    <div class="absolute inset-0 
+      bg-[url('{% static 'image/additions.webp' %}')] 
+      bg-cover bg-center">
+    </div>
+
+
+
+    <div class="relative z-10 h-full flex items-center">
+        <div class="w-full lg:w-1/2 p-8 text-[#FFCB90]">
+
+
+
+            <p class="text-sm text-[#FFCB90] font-montserrat">
+                cold & drinks
+            </p>
+
+            <h1 class="text-7xl font-bold mt-5 font-montserrat">
+                Улучши<br /><span class="font-normal">свой заказ</span>
+            </h1>
+
+            <p class="mt-5 text-3xl font-montserrat">
+                Выберите холодные <span class="font-bold text-4xl">напитки</span> к вашему заказу
+            </p>
+
+            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
+                hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5">
+                Заказать доставку
+            </a>
+            <!-- номера телефонов -->
+            <div class="flex flex-row flex-wrap gap-2 font-montserrat">
+                <div class="flex items-center mt-5 flex-row">
+                    <img src="{% static 'image/footer-map.svg' %}" class="w-6 h-6 mr-2">
+                    <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
+                </div>
+                <!-- <div class="flex items-center mt-5 flex-row">
+                    <img src="{% static 'image/phone.svg' %}" class="w-6 h-6 mr-2">
+                    <p class="text-sm font-bold text-lime-400">+380961234567</p>
+                </div> -->
+            </div>
+            <!-- номера телефонов -->
+        </div>
+    </div>
+
+</section>
+<!-- экран дестоп-->
+<!-- экран моб -->
+<section class="md:hidden relative w-full text-white">
+
+    <!-- Картинка -->
+    <img src="{% static 'image/additions-mob.webp' %}" alt="Пицца" class="w-full h-auto block" loading="eager">
+    <div class="absolute inset-0 bg-black/10"></div>
+
+    <!-- Текст ПО ЦЕНТРУ -->
+    <div class="absolute inset-0 flex flex-col justify-center px-4 mt-[230px]">
+
+
+
+
+        <h1 class="text-4xl font-bold mt-5 font-montserrat text-[#FFCB90]">
+            Улучши<br /><span class="font-normal">свой заказ</span>
+        </h1>
+
+        <p class="mt-5 text-xl font-montserrat text-[#FFCB90]">
+            Выберите холодные <span class="font-bold text-xl">напитки</span> к вашему заказу
+        </p>
+
+        <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
+                hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5 text-[#FFCB90] text-center">
+            Заказать доставку
+        </a>
+        <!-- номера телефонов -->
+        <div class="flex flex-row flex-wrap gap-2 font-montserrat text-[#FFCB90]">
+            <div class="flex items-center mt-5 flex-row">
+                <img src="{% static 'image/footer-map.svg' %}" class="w-6 h-6 mr-2">
+                <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
+            </div>
+        </div>
+
+</section>
+<!-- экран моб -->
 <!-- экран моб -->
 {% endif %}
 {% comment %} Блок с картинкой и текстом в зависимости от категории {% endcomment %}
@@ -219,10 +304,26 @@
         Заказать доставку
     </a>
 </div>
+{% elif category.slug == 'napitki' %}
 <!----------------Текст-------------- -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/napitki.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Холодные
+        <!-- вертикальная линия -->
+        <span class="w-[3px] h-10 bg-red-500"></span>
+        <span class="text-[#BF0F0F] font-normal">напитки</span>
+    </h4>
+    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Большой выбор холодных
+        напитков</h5>
+</div>
+<div class="flex items-center justify-center mt-10 flex-row px-1 text-center">
+    <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
+        Заказать доставку
+    </a>
+</div>
 {% endif %}
 {% comment %} Блок с картинкой и текстом в зависимости от категории {% endcomment %}
-
 
 <!----------------карточка пицца ---------------->
 <div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
@@ -232,8 +333,9 @@
 </div>
 <!----------------карточка пицца ---------------->
 
-<!----------------Текст-------------- -->
-<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+<!----------------Текст скрываем только для напитков- {% if category.slug == 'napitki' %}hidden{% endif %}------------- -->
+<div
+    class="flex items-center justify-center mt-20 flex-col px-1 text-center {% if category.slug == 'napitki' %}hidden{% endif %}">
     <img src="{% static 'image/additions.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
     <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">
         Добавки
@@ -241,6 +343,7 @@
 </div>
 
 <!----------------Текст-------------- -->
+
 {% if products_extra %}
 <div class="flex flex-row items-center justify-center mt-10 gap-5 flex-wrap mb-10">
     {% for product_extra in products_extra %}
@@ -401,6 +504,24 @@
 </section>
 <!----------------Pizza-About---------------->
 {% endif %}
+<!-- универсальный компонент категории -->
+<div class="flex items-center justify-center mt-20 mb-20 flex-row px-1">
+    <h4 class="text-4xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A] text-center">Пицца
+        <span class="text-[#BF0F0F] font-normal">суши &
+            роллы</span>
+    </h4>
+</div>
+<div class="flex items-center justify-center mt-20 gap-10 mb-10">
+    <div class="bg-[#FFCB90] rounded-[50px] overflow-hidden ">
+        <!-- Внутренний блок с текстом и padding -->
+        <div class="p-6 text-center flex flex-row flex-wrap justify-center items-center gap-20">
+            {% for category in categories %}
+            {% include 'include/category.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!---------------- компонент категории-------------- -->
 
 <!----------------почему мы лучше------------- -->
 <!----------------Текст-------------- -->
@@ -449,6 +570,7 @@
     </div>
 </div>
 <!----------------почему мы лучше------------- -->
+
 
 <!----------------смотри еще------------- -->
 <!-- смотри еще -->
