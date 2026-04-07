@@ -2,7 +2,11 @@
 <div class="w-[270px] bg-[#FE9C1C]/40 rounded-[80px] overflow-hidden flex flex-col items-center text-center p-4">
 
     <!-- 🖼 Картинка -->
+    {% if product_extra.image %}
     <img src="{{ product_extra.image.url }}" alt="Пицца доставка" class="w-20 h-20 object-contain" loading="lazy">
+    {% else %}
+    <img src="{% static 'image/no-image.webp' %}" alt="Пицца доставка" class="w-20 h-20 object-contain" loading="lazy">
+    {% endif %}
 
     <!-- 📄 Текст -->
     <h3 class="text-2xl font-bold text-[#64352A] mt-2 uppercase">{{ product_extra.name }}</h3>

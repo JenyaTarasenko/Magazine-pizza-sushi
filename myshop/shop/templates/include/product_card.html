@@ -4,10 +4,13 @@
     <div class="relative pt-[100px] px-6 pb-6 font-montserrat 
                     flex flex-col items-center text-center 
                     bg-[#B11D1D] rounded-[50px]">
-
-
+        {% if product.image %}
         <img src="{{ product.image.url }}" class="w-[200px] h-[200px] object-contain
                     absolute -top-[80px] left-1/2 -translate-x-1/2">
+        {% else %}
+        <img src="{% static 'image/no-image.webp' %}" class="w-[200px] h-[200px] object-contain
+                    absolute -top-[80px] left-1/2 -translate-x-1/2">
+        {% endif %}
 
         <!-- Контент -->
         <h3 class="text-lg font-bold mt-2 text-white line-clamp-1">
@@ -23,6 +26,7 @@
         {% if product.category.slug == 'pizza' or parent.slug == 'pizza' %}
         <!-- 🍕 ПИЦЦА -->
         <div class="flex items-center gap-2 mt-5">
+
             <img src="{% static 'image/deametr.svg' %}" class="w-6 h-6">
             <p class="text-lg text-white">30 см</p>
         </div>
