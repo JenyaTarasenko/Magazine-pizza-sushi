@@ -1,5 +1,5 @@
 
-
+from decouple import config
 from pathlib import Path
 
 
@@ -7,6 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = 'django-insecure-+o%fobu#7*))d_y@w=(r(ihff6a0163xu3z3^e$zr@=(4d6#6y'
+
+#Телеграм pip install python-telegram-bot
+LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY', default='')
+LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY', default='')
 
 DEBUG = True
 
@@ -31,6 +35,7 @@ INSTALLED_APPS = [
     
     'shop.apps.ShopConfig',#приложенеие
     'cart.apps.CartConfig', #Приложение корзины 
+    'orders.apps.OrdersConfig', #Приложение заказов
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,21 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+Thank you
+{% endblock %}
+
+{% block content %}
+<h1>Thank you</h1>
+<p>Your order has been successfully completed. Your order number is
+    <strong>{{ order.id }}</strong>.
+</p>
+{% if liqpay %}
+<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+    <input type="hidden" name="data" value="{{ liqpay.data }}" />
+    <input type="hidden" name="signature" value="{{ liqpay.signature }}" />
+    <input type="submit" value="Оплатить заказ через LiqPay" class="button" />
+</form>
+{% else %}
+<p style="color: red;">Ошибка: данные для оплаты LiqPay не сформированы!</p>
+{% endif %}
+{% endblock %}
