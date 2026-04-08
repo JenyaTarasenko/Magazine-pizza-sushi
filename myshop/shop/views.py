@@ -66,12 +66,30 @@ def category_detail(request, slug):
     products_extra = Product.objects.filter(category=category, is_extra=True)
 
 
+    # SEO динамическое
+    if hasattr(category, 'description') and category.description:
+        seo_description = category.description[:150]  # первые 150 символов
+    elif products_main.exists():
+        # если нет описания категории, возьмем описание первого продукта
+        seo_description = products_main.first().description[:150]
+    else:
+        seo_description = f"Купити {category.name} онлайн швидко та зручно"
+
+    seo_title = category.name
+    seo_keywords = ', '.join(category.name.split())
+
+
+
     context = {
         'category': category,
         'products_main': products_main,
         'products_extra': products_extra,
         'cart_product_form': cart_product_form,
         'categories': categories,
+        'seo_title': seo_title,
+        'seo_description': seo_description,
+        'seo_keywords': seo_keywords,
+        'seo_image': category.image.url if category.image else '', 
 
     }
     return render(request, 'shop/product/category_detail.html', context)
@@ -88,12 +106,24 @@ def product_detail(request, slug):
     cart_product_form = CartAddProductForm()
     # вытягиваем категориикроме дочерних
     categories = Category.objects.filter(parent__isnull=True)
+
+
+    # Динамическое SEO
+    seo_title = product.name
+    seo_description = product.description[:150] if product.description else f"Купити {product.name} онлайн швидко та зручно"
+    seo_keywords = ', '.join(product.name.split())
+    seo_image = product.image.url if product.image else ''  # если у продукта есть картинка
+
     
     context = {
         'product': product,
         'extras': extras,
         'cart_product_form': cart_product_form,
         'categories': categories,
+        'seo_title': seo_title,
+        'seo_description': seo_description,
+        'seo_keywords': seo_keywords,
+        'seo_image': seo_image,
     }
 
     return render(request, 'shop/product/product_detail.html', context)
@@ -112,14 +142,14 @@ def offer(request):
 def obmen(request):
     return render(request, 'shop/product/obmen.html')
 
-def cart(request):
-    return render(request, 'shop/product/cart.html')
+# def cart(request):
+#     return render(request, 'shop/product/cart.html')
 
-def product_list_pizza(request):
-    return render(request, 'shop/product/product-list-pizza.html')
+# def product_list_pizza(request):
+#     return render(request, 'shop/product/product-list-pizza.html')
 
-def product_list_sushi(request):
-    return render(request, 'shop/product/product-list-sushi.html')
+# def product_list_sushi(request):
+#     return render(request, 'shop/product/product-list-sushi.html')
 
-def additions_list(request):
-    return render(request, 'shop/product/product-list-additions.html')
+# def additions_list(request):
+    # return render(request, 'shop/product/product-list-additions.html')

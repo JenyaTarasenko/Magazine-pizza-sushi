@@ -148,28 +148,101 @@
                             hover:bg-[#64352A] hover:text-white transition text-center">
                     Оформить заказ
                 </a>
+            </div>
+
+
+            <div class="max-w-5xl mx-auto px-4 py-10 
+            grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Карточка -->
+                <div class="bg-white/50
+                    rounded-2xl p-6 shadow-sm">
+
+                    <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+                        1. Оплата Приват Банк LiqPay
+                    </h3>
+
+                    <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+                        Оплата через защищённый сервис LiqPay (ПриватБанк). Быстро и безопасно с карты или через
+                        Приват24. После оплаты вы получаете подтверждение, а мы доставим товар прямо к вам домой.Также
+                        мы перезвоним вам для подтверждения заказа.
+                    </p>
+
+                </div>
+                <!-- Карточка заказа -->
+                <div class="bg-white/50
+                    rounded-2xl p-6 shadow-sm">
+
+                    <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+                        2. Оплата при получении картой или наличными
+                    </h3>
+
+                    <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+                        Добавьте товар в корзину и нажмите «Позвонить нам». Наш менеджер соберёт заказ, а вы
+                        расплатитесь
+                        картой или наличными с курьером. Достаквка осуществляется в течении 40 минут.
+                    </p>
+
+                </div>
+                <!-- Карточка заказа -->
+
 
             </div>
 
-        </div>
-
-        {% else %}
-        <div class="flex flex-col items-center justify-center">
-            <p class="font-thin text-2xl font-montserrat mb-10 text-[#64352A]/40">Корзина пустая</p>
-            <a href="{% url 'shop:index' %}" class="px-6 py-3 rounded-full 
+            {% else %}
+            <div class="flex flex-col items-center justify-center">
+                <p class="font-thin text-2xl font-montserrat mb-10 text-[#64352A]/40">Корзина пустая</p>
+                <a href="{% url 'shop:index' %}" class="px-6 py-3 rounded-full 
                           border-2 border-[#64352A] text-[#64352A]
                           hover:bg-[#64352A] hover:text-white transition text-center">
-                Вернуться в магазин
-            </a>
+                    Вернуться в магазин
+                </a>
+            </div>
+            <div class="max-w-5xl mx-auto px-4 py-10 
+            grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Карточка -->
+                <div class="bg-white/50
+                    rounded-2xl p-6 shadow-sm">
+
+                    <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+                        1. Оплата Приват Банк LiqPay
+                    </h3>
+
+                    <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+                        Оплата через защищённый сервис LiqPay (ПриватБанк). Быстро и безопасно с карты или через
+                        Приват24. После оплаты вы получаете подтверждение, а мы доставим товар прямо к вам домой.Также
+                        мы перезвоним вам для подтверждения заказа.
+                    </p>
+
+                </div>
+                <!-- Карточка заказа -->
+                <div class="bg-white/50
+                    rounded-2xl p-6 shadow-sm">
+
+                    <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+                        2. Оплата при получении картой или наличными
+                    </h3>
+
+                    <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+                        Добавьте товар в корзину и нажмите «Позвонить нам». Наш менеджер соберёт заказ, а вы
+                        расплатитесь
+                        картой или наличными с курьером. Достаквка осуществляется в течении 40 минут.
+                    </p>
+
+                </div>
+                <!-- Карточка заказа -->
+
+            </div>
+
+
+
+            {% endif %}
+
         </div>
-
-
-        {% endif %}
 
     </div>
 
-</div>
 
 
-
-{% endblock %}
+    {% endblock %}

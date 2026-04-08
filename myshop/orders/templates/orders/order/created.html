@@ -1,21 +1,42 @@
 {% extends "shop/base.html" %}
 
 {% block title %}
-Thank you
+Спасибо за заказ
 {% endblock %}
 
 {% block content %}
-<h1>Thank you</h1>
-<p>Your order has been successfully completed. Your order number is
-    <strong>{{ order.id }}</strong>.
-</p>
-{% if liqpay %}
-<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
-    <input type="hidden" name="data" value="{{ liqpay.data }}" />
-    <input type="hidden" name="signature" value="{{ liqpay.signature }}" />
-    <input type="submit" value="Оплатить заказ через LiqPay" class="button" />
-</form>
-{% else %}
-<p style="color: red;">Ошибка: данные для оплаты LiqPay не сформированы!</p>
-{% endif %}
+<div class="max-w-6xl mx-auto px-4 pt-24 mt-10">
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm flex flex-col items-center max-w-2xl mx-auto">
+        <h1 class="text-3xl text-[#64352A] font-montserrat font-bold text-center">Спасибо за ваш заказ</h1>
+        <h2 class="text-xl text-[#64352A] font-montserrat font-medium text-center mt-5">Вы переходите в сервис
+            <span class="font-bold">LiqPay</span> для оплаты он-лайн
+        </h2>
+        {% if liqpay %}
+        <form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+            <input type="hidden" name="data" value="{{ liqpay.data }}" />
+            <input type="hidden" name="signature" value="{{ liqpay.signature }}" />
+
+            <button type="submit" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm mt-10">
+                Оплатить через LiqPay
+            </button>
+        </form>
+        <!-- <form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+            <input type="hidden" name="data" value="{{ liqpay.data }}" />
+            <input type="hidden" name="signature" value="{{ liqpay.signature }}" />
+            <input type="submit" value="Оплатить заказ через LiqPay" class="button" />
+        </form> -->
+        {% else %}
+        <p class="text-center text-red-500">Упс что-то пошло не так, попробуйте позже</p>
+        {% endif %}
+    </div>
+
+    <!-- <p>Ваш заказ успешно оформлен. Номер вашего заказа
+        <strong>{{ order.id }}</strong>.
+    </p> -->
+
+</div>
 {% endblock %}

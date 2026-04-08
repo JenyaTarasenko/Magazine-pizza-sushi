@@ -1,10 +1,10 @@
 {% extends "shop/base.html" %}
 
-{% block title %}Checkout{% endblock %}
+{% block title %}Оформление заказа{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 mt-10">
-    <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
+<div class="min-h-screen flex items-center justify-center px-4 py-12 mt-10">
+    <div class="w-full max-w-lg bg-white/50 shadow-lg rounded-3xl p-8">
         <h1 class="text-2xl font-bold text-center mb-6">Форма оформления заказа</h1>
 
         <form method="post" class="space-y-4">
@@ -56,7 +56,7 @@
                 Оформить заказ
             </button>
             <!-- Кнопка -->
-            <a href="#"><button type="submit"
+            <a href="tel:+380990160002"><button type="submit"
                     class="w-full bg-red-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition mt-4">
                     Связатся с менеджером
                 </button>
@@ -93,20 +93,4 @@
         });
     });
 </script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const branchInput = document.getElementById('nova_poshta_branch'); // используем id из формы
-        const errorMsg = document.createElement('p');
-        errorMsg.classList.add('text-red-600', 'text-sm', 'mt-1');
-        branchInput.parentNode.appendChild(errorMsg);
-
-        branchInput.addEventListener('input', function () {
-            if (!/^\d*$/.test(branchInput.value)) {
-                errorMsg.textContent = 'Введите только цифры';
-            } else {
-                errorMsg.textContent = '';
-            }
-        });
-    });
-</script> -->
 {% endblock %}

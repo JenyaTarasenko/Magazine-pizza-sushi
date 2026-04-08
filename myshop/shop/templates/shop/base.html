@@ -5,7 +5,41 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My shop{% endblock %}</title>
+
+    <title>{% block title %}{{ seo_title|default:"Доставка Пиццы и Суши в Днепре" }}{% endblock %}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ seo_title|default:'Доставка Пиццы и Суши в Днепре' }}">
+    <meta property="og:description"
+        content="{{ seo_description|default:'Доставка Пиццы и Суши в Днепре. Закажите онлайн с быстрой доставкой за 40 минут!' }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    {% if seo_image %}
+    <meta property="og:image"
+        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ seo_image }}{% endblock %}">
+    {% endif %}
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "{{ seo_title|default:'Мій магазин'|escapejs }}",
+        "description": "{{ seo_description|default:'Доставка піци та суші в Дніпрі. Замовте онлайн.'|escapejs }}",
+        "url": "{{ canonical_url|default:request.build_absolute_uri }}"{% if seo_image %},
+        "image": "{{ request.scheme }}://{{ request.get_host }}{{ seo_image }}"{% endif %},
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dnipro",
+            "addressCountry": "Ukraine"
+        },
+        "openingHours": "Mo-Su 10:00-21:00",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+380 (99) 016 00 02",
+            "contactType": "Customer Service"
+        }
+        }
+    </script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,8 +90,15 @@
     {% if request.resolver_match.url_name not in 'cart_detail cart_add cart_remove' %}
     {% include 'include/footer.html' %}
     {% endif %}
-
-
-
+    <!-- Кнопка Чат -->
+    <a href="https://t.me/username" target="_blank" class="fixed bottom-24 right-6 bg-[#FFCB90] text-white flex items-center space-x-2 px-5 py-3 rounded-full shadow-xl
+        hover:scale-105 transition-transform duration-300 z-50 hover:bg-white">
+        <img src="{% static 'image/Chat.svg' %}" class="w-7 h-7" alt="чат">
+    </a>
+    <!-- Фиксированная кнопка телефона -->
+    <a href="tel:+380990160002" class="fixed bottom-6 right-6 bg-lime-500 text-white flex items-center space-x-2 px-5 py-3 rounded-full shadow-xl 
+              animate-bounce hover:scale-105 transition-transform duration-300 z-50 hover:bg-[#FEE9D1]">
+        <img src="{% static 'image/Call.svg' %}" class="w-7 h-7" alt="телефон">
+    </a>
 </body>
 <!-- цвет всего текста бэкграунд -->

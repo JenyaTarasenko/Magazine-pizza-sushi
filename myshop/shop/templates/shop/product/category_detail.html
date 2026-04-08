@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% block title %}{{ seo_title }}{% endblock %}
 {% block content %}
 {% comment %} Блок с картинкой и текстом в зависимости от категории {% endcomment %}
 {% if category.slug == 'pizza' %}
@@ -20,12 +20,6 @@
     <div class="relative z-10 h-full flex items-center">
         <div class="w-full lg:w-1/2 p-8 text-[#411F17]">
 
-            <!-- <img src="{% static 'image/list.svg' %}" class="w-20 h-20 mb-4">
-
-            <p class="text-sm text-lime-400 font-montserrat">
-                Меню пиццы
-            </p> -->
-
             <h1 class="text-7xl font-bold mt-5 font-montserrat">
                 Горячая<br /><span class="text-[#BF0F0F] font-normal">пицца</span> на любой вкус
             </h1>
@@ -34,7 +28,7 @@
                 Оригинальные рецепты <span class="font-bold text-4xl">более 40 видов</span>
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5">
                 Заказать доставку
             </a>
@@ -44,10 +38,6 @@
                     <img src="{% static 'image/Map2.svg' %}" class="w-6 h-6 mr-2">
                     <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
                 </div>
-                <!-- <div class="flex items-center mt-5 flex-row">
-                    <img src="{% static 'image/phone.svg' %}" class="w-6 h-6 mr-2">
-                    <p class="text-sm font-bold text-lime-400">+380961234567</p>
-                </div> -->
             </div>
             <!-- номера телефонов -->
         </div>
@@ -76,7 +66,7 @@
             Оригинальные рецепты <span class="font-bold text-xl">более 40 видов</span>
         </p>
 
-        <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
+        <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5 text-[#411F17] text-center">
             Заказать доставку
         </a>
@@ -94,7 +84,6 @@
 <!-- экран дестоп -->
 <section class="hidden md:block relative h-screen">
 
-
     <div class="absolute inset-0 
       bg-[url('{% static 'image/sushi-all-des.webp' %}')] 
       bg-cover bg-center">
@@ -107,12 +96,6 @@
     <div class="relative z-10 h-full flex items-center">
         <div class="w-full lg:w-1/2 p-8 text-[#411F17]">
 
-            <!-- <img src="{% static 'image/list.svg' %}" class="w-20 h-20 mb-4">
-
-            <p class="text-sm text-lime-400 font-montserrat">
-                Меню пиццы
-            </p> -->
-
             <h1 class="text-7xl font-bold mt-5 font-montserrat">
                 Свежие<br /><span class="text-[#BF0F0F] font-normal">роллы и сеты</span> на любой вкус
             </h1>
@@ -121,7 +104,7 @@
                 Оригинальные рецепты <span class="font-bold text-4xl">большей выбор роллов и сетов на любой вкус</span>
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5">
                 Заказать доставку
             </a>
@@ -131,10 +114,6 @@
                     <img src="{% static 'image/Map2.svg' %}" class="w-6 h-6 mr-2">
                     <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
                 </div>
-                <!-- <div class="flex items-center mt-5 flex-row">
-                    <img src="{% static 'image/phone.svg' %}" class="w-6 h-6 mr-2">
-                    <p class="text-sm font-bold text-lime-400">+380961234567</p>
-                </div> -->
             </div>
             <!-- номера телефонов -->
         </div>
@@ -163,7 +142,7 @@
             Оригинальные рецепты <span class="font-bold text-xl">лучший выбор в Днепре</span>
         </p>
 
-        <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
+        <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#411F17]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5 text-[#411F17] text-center">
             Заказать доставку
         </a>
@@ -205,7 +184,7 @@
                 Выберите холодные <span class="font-bold text-4xl">напитки</span> к вашему заказу
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5">
                 Заказать доставку
             </a>
@@ -215,10 +194,6 @@
                     <img src="{% static 'image/footer-map.svg' %}" class="w-6 h-6 mr-2">
                     <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
                 </div>
-                <!-- <div class="flex items-center mt-5 flex-row">
-                    <img src="{% static 'image/phone.svg' %}" class="w-6 h-6 mr-2">
-                    <p class="text-sm font-bold text-lime-400">+380961234567</p>
-                </div> -->
             </div>
             <!-- номера телефонов -->
         </div>
@@ -247,7 +222,7 @@
             Выберите холодные <span class="font-bold text-xl">напитки</span> к вашему заказу
         </p>
 
-        <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
+        <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 rounded-full border-[#FFCB90]
                 hover:bg-[#411F17] hover:text-white transition font-montserrat mt-5 text-[#FFCB90] text-center">
             Заказать доставку
         </a>
@@ -258,7 +233,6 @@
                 <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
             </div>
         </div>
-
 </section>
 <!-- экран моб -->
 <!-- экран моб -->
@@ -278,7 +252,7 @@
         вкус с разными ингредиентами</h5>
 </div>
 <div class="flex items-center justify-center mt-10 flex-row px-1 text-center">
-    <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+    <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
         Заказать доставку
     </a>
@@ -317,7 +291,7 @@
         напитков</h5>
 </div>
 <div class="flex items-center justify-center mt-10 flex-row px-1 text-center">
-    <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+    <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
         Заказать доставку
     </a>
@@ -382,7 +356,7 @@
                 классического теста до секретных сочетаний ингредиентов
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full  
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full  
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
                 Заказать доставку
             </a>
@@ -418,7 +392,7 @@
                 лет на рынке наши рецепты отточены до идеала, а настоящая душа привезена прямиком из Италии — от
                 классического теста до секретных сочетаний ингредиентов
             </p>
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
                 Заказать доставку
             </a>
@@ -456,7 +430,7 @@
                 выбор суши и роллов на любой вкус и бюджет.
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
                 Заказать доставку
             </a>
@@ -492,7 +466,7 @@
                 выбор суши и роллов на любой вкус и бюджет.
             </p>
 
-            <a href="/menu" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
                 Заказать доставку
             </a>

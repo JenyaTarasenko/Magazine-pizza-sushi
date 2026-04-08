@@ -15,7 +15,7 @@ urlpatterns = [
     path('obmen/', views.obmen, name='obmen'),#Обмен и возврат
     # path('cart/', views.cart, name='cart'),#Корзина
     
-    path('product-list-pizza/', views.product_list_pizza, name='product-list-pizza'),#Список пицц
-    path('product-list-sushi/', views.product_list_sushi, name='product-list-sushi'),#Список суши
-    path('additions-list/', views.additions_list, name='additions-list'),#Список суши
+    # path('product-list-pizza/', views.product_list_pizza, name='product-list-pizza'),#Список пицц
+    # path('product-list-sushi/', views.product_list_sushi, name='product-list-sushi'),#Список суши
+    # path('additions-list/', views.additions_list, name='additions-list'),#Список суши
 ]
