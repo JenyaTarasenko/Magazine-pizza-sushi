@@ -38,6 +38,21 @@ def index(request):
     }
     return render(request, 'shop/product/index.html', context)
 
+# поиск отдельная страница
+def product_search(request):
+    query = request.GET.get('q', '')  # Получаем текст поиска из GET
+    products_main = Product.objects.filter(name__icontains=query) if query else []
+
+    # Для каждого продукта достаем его добавки
+    for product in products_main:
+        product.extras_main = product.extras.all()  # это добавки к конкретной пицце
+
+    context = {
+        'query': query,
+        'products_main': products_main,
+    }
+    return render(request, 'shop/product/product_search.html', context)
+
 
 
 

@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-5 mt-20">
+
+    <form method="get" action="{% url 'shop:product_search' %}" class="flex gap-3 mb-20 items-center">
+        <input type="text" name="q" placeholder="Введите название товара..." value="{{ query }}"
+            class="border border-gray-300 rounded-3xl px-3 py-2 flex-1 focus:ring-2 focus:ring-orange-400">
+        <button type="submit" class="bg-orange-500 text-white px-5 py-2 rounded-3xl hover:bg-orange-600 transition">
+            <img src="{% static 'image/search.svg' %}" alt="Search" class="w-5 h-5">
+        </button>
+    </form>
+
+    {% if products_main %}
+    <div id="products-list" class="flex items-center justify-center mt-20 gap-6 flex-wrap">
+        {% for product in products_main %}
+        {% include 'include/product_card.html' with product=product category=category %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-gray-500 mt-10 text-lg">
+        По запросу "{{ query }}" ничего не найдено.
+    </p>
+    {% endif %}
+
+
+</div>
+{% endblock %}

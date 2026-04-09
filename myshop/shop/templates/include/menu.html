@@ -100,6 +100,9 @@
 
                 <!-- Корзина  и аутентификация-->
                 <div class="relative flex items-center space-x-2 flex-row gap-5">
+                    <a href="{% url 'shop:product_search' %}">
+                        <img src="{% static 'image/search.svg' %}" alt="Search" class="w-7 h-7">
+                    </a>
 
                     {% with total_items=cart|length %}
                     <a href="{% url 'cart:cart_detail' %}"
