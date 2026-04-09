@@ -121,6 +121,7 @@
 
 </section>
 <!-- экран дестоп-->
+
 <!-- экран моб -->
 <section class="md:hidden relative w-full text-white">
 
@@ -237,6 +238,18 @@
 <!-- экран моб -->
 <!-- экран моб -->
 {% endif %}
+<!-- <form hx-get="{% url 'shop:category_detail' category.slug %}" hx-target="#products-list" hx-swap="outerHTML"
+    class="flex gap-3 mb-6 items-center">
+    <input type="number" name="min_price" placeholder="От"
+        class="border border-gray-300 rounded-lg px-3 py-2 w-24 focus:ring-2 focus:ring-orange-400">
+
+    <input type="number" name="max_price" placeholder="До"
+        class="border border-gray-300 rounded-lg px-3 py-2 w-24 focus:ring-2 focus:ring-orange-400">
+
+    <button type="submit" class="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 transition">
+        Фильтр
+    </button>
+</form> -->
 {% comment %} Блок с картинкой и текстом в зависимости от категории {% endcomment %}
 
 {% if category.slug == 'pizza' %}
@@ -299,8 +312,27 @@
 {% endif %}
 {% comment %} Блок с картинкой и текстом в зависимости от категории {% endcomment %}
 
+
+{% comment %} Блок флорма с фильтрациями цены {% endcomment %}
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <h5 class="text-2xl font-montserrat text-[#64352A]">Ведите сумму</h5>
+</div>
+<form hx-get="{% url 'shop:category_detail' category.slug %}" hx-target="#products-list" hx-swap="outerHTML"
+    class="flex gap-3 mb-6 items-center justify-center mt-5 mb-20 flex-row flex-wrap">
+    <input type="number" name="min_price" placeholder="От"
+        class="border-[#64352A] rounded-3xl px-3 py-2 w-24 focus:ring-1 focus:ring-[#64352A]">
+
+    <input type="number" name="max_price" placeholder="До"
+        class="border-[#64352A] rounded-3xl px-3 py-2 w-24 focus:ring-1 focus:ring-white">
+
+    <button type="submit" class="bg-orange-500 text-white px-5 py-2 rounded-3xl hover:bg-orange-600 transition">
+        Фильтр {{ category.name }}
+    </button>
+</form>
+{% comment %} Блок флорма с фильтрациями цены {% endcomment %}
+
 <!----------------карточка пицца ---------------->
-<div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
+<div id="products-list" class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
     {% for product in products_main %}
     {% include 'include/product_card.html' with product=product category=category %}
     {% endfor %}

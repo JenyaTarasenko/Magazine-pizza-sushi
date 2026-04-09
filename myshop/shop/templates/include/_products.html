@@ -1,0 +1,20 @@
+{% load static %}
+<div id="products-list" class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap">
+    {% for product in products_main %}
+    {% include 'include/product_card.html' with product=product category=category %}
+    {% empty %}
+    <div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap bg-white/30
+                rounded-2xl p-6 shadow-sm flex-col">
+
+        <p class="text-lg font-normal text-[#64352A]/50 leading-relaxed font-montserrat text-center">Нет выбранных
+            {{ category.name }}<br />
+            на такую сумму</p>
+        <!-- фильтрация без перезагрузки -->
+        <a href="{% url 'shop:category_detail' category.slug %}" hx-get="{% url 'shop:category_detail' category.slug %}"
+            hx-target="#products-list" hx-swap="outerHTML" class="inline-block mt-5 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
+            Показать все {{ category.name }}
+        </a>
+    </div>
+    {% endfor %}
+</div>

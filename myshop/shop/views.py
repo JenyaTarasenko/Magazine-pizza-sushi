@@ -46,23 +46,76 @@ def index(request):
 # для пиццы и суши через {% if category.slug == 'pizza' %}  {% endif %} {% if category.slug == 'sushi' %}  {% endif %}
 # это дает гибкаость в работе и дает правельную практику 
 
+# def category_detail(request, slug):
+#     category = get_object_or_404(Category, slug=slug)
+
+#     # Все дочерние категории (если есть)
+#     children = category.children.all()
+#     cart_product_form = CartAddProductForm()
+
+#     # вытягиваем категориикроме дочерних
+#     categories = Category.objects.filter(parent__isnull=True)
+#     products_extra = Product.objects.filter(category=category, is_extra=True)
+
+#     # Если есть дочерние категории, собираем все продукты в один список
+#     if children.exists():
+#         products_main = Product.objects.filter(category__in=children, is_extra=False)
+#     else:
+#         products_main = Product.objects.filter(category=category, is_extra=False)
+
+#     # Топпинги
+#     products_extra = Product.objects.filter(category=category, is_extra=True)
+
+
+#     # SEO динамическое
+#     if hasattr(category, 'description') and category.description:
+#         seo_description = category.description[:150]  # первые 150 символов
+#     elif products_main.exists():
+#         # если нет описания категории, возьмем описание первого продукта
+#         seo_description = products_main.first().description[:150]
+#     else:
+#         seo_description = f"Купити {category.name} онлайн швидко та зручно"
+
+#     seo_title = category.name
+#     seo_keywords = ', '.join(category.name.split())
+
+
+
+#     context = {
+#         'category': category,
+#         'products_main': products_main,
+#         'products_extra': products_extra,
+#         'cart_product_form': cart_product_form,
+#         'categories': categories,
+#         'seo_title': seo_title,
+#         'seo_description': seo_description,
+#         'seo_keywords': seo_keywords,
+#         'seo_image': category.image.url if category.image else '', 
+
+#     }
+#     return render(request, 'shop/product/category_detail.html', context)
+    
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
 
-    # Все дочерние категории (если есть)
     children = category.children.all()
     cart_product_form = CartAddProductForm()
-    # вытягиваем категориикроме дочерних
     categories = Category.objects.filter(parent__isnull=True)
-    products_extra = Product.objects.filter(category=category, is_extra=True)
 
-    # Если есть дочерние категории, собираем все продукты в один список
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
     if children.exists():
         products_main = Product.objects.filter(category__in=children, is_extra=False)
     else:
         products_main = Product.objects.filter(category=category, is_extra=False)
 
-    # Топпинги
+    # фильтр по цене форма находится в category_detail.html и передает данные через hx-get в _products.html
+    if min_price:
+        products_main = products_main.filter(price__gte=min_price)
+    if max_price:
+        products_main = products_main.filter(price__lte=max_price)
+
     products_extra = Product.objects.filter(category=category, is_extra=True)
 
 
@@ -78,8 +131,6 @@ def category_detail(request, slug):
     seo_title = category.name
     seo_keywords = ', '.join(category.name.split())
 
-
-
     context = {
         'category': category,
         'products_main': products_main,
@@ -90,10 +141,12 @@ def category_detail(request, slug):
         'seo_description': seo_description,
         'seo_keywords': seo_keywords,
         'seo_image': category.image.url if category.image else '', 
-
     }
+
+    if request.headers.get('HX-Request'):
+        return render(request, 'include/_products.html', context)
+
     return render(request, 'shop/product/category_detail.html', context)
-    
 
 
 
