@@ -7,7 +7,7 @@
 <div class="max-w-2xl mx-auto p-5 mt-20">
 
     <form method="get" action="{% url 'shop:product_search' %}" class="flex gap-3 mb-20 items-center">
-        <input type="text" name="q" placeholder="Введите название товара..." value="{{ query }}"
+        <input type="text" name="q" placeholder="Введите название блюда" value="{{ query }}"
             class="border border-gray-300 rounded-3xl px-3 py-2 flex-1 focus:ring-2 focus:ring-orange-400">
         <button type="submit" class="bg-orange-500 text-white px-5 py-2 rounded-3xl hover:bg-orange-600 transition">
             <img src="{% static 'image/search.svg' %}" alt="Search" class="w-5 h-5">
@@ -21,9 +21,98 @@
         {% endfor %}
     </div>
     {% else %}
-    <p class="text-center text-[#64352A] text-lg">По вашему запросу <span class="font-bold text-2xl">{{ query }}</span>
+
+
+    <p class="text-center text-[#64352A]/30 text-sm">По вашему запросу <span class="font-bold text-2xl">{{query}}</span>
         ничего не найдено <br> Попробуйте найти что-то другое</p>
     {% endif %}
-
+    {% if category %}
+    <div class="flex justify-center mb-10">
+        <a href="{% url 'shop:category_detail' category.slug %}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full  
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
+            Смотреть {{ category.name }}
+        </a>
+    </div>
+    {% endif %}
 </div>
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/dostavka.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Как заказать
+        <span class="text-[#BF0F0F] font-normal">доставку</span>
+    </h4>
+    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Доставка осуществляется в
+        течении 40 минут</h5>
+</div>
+<div class="flex items-center justify-center mt-5 flex-row px-1 text-center">
+    <a href="tel:+380990160002" class="inline-block mt-3 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A] mb-5">
+        Заказать доставку
+    </a>
+</div>
+<!----------------Текст-------------- -->
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+    <!-- Карточка 1 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col font-montserrat">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                1
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Быстрый заказ по телефону</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Выберите пиццу или суши, добавьте в корзину, нажмите кнопку «Позвонить» и закажите доставку на дом.
+                Оплата наличными при получении.
+            </p>
+        </div>
+    </div>
+
+    <!-- Карточка 2 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                2
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Оплата онлайн</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Выберите пиццу или суши, добавьте в корзину, оплатите онлайн карточкой. Менеджер свяжется с вами для
+                уточнения адреса и времени доставки.
+            </p>
+        </div>
+    </div>
+
+    <!-- Карточка 3 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                3
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Свяжитесь с нами</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Добавьте товары в корзину и нажмите «Свяжитесь с нами». Мы быстро свяжемся с вами для подтверждения.
+            </p>
+        </div>
+    </div>
+    <!-- Карточка 2 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                4
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Заказ на время или дату</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Вы можете позвонить или нажав на кнопку «Свяжитесь с нами» заказать на время или на дату
+            </p>
+        </div>
+    </div>
+
+    <!-- Добавляй столько карточек, сколько нужно -->
+</div>
+<!----------------как заказать--------------->
+
+
+
 {% endblock %}

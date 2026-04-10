@@ -18,10 +18,9 @@
                     Главная
                 </a>
                 <!-- Дропдаун меню категорий -->
-                <div class="relative" x-data="{ open: false }">
+                <!-- <div class="relative" x-data="{ open: false }">
                     <button @mouseenter="open = true" @mouseleave="open = false"
-                        class="text-[#FFCB90] font-montserrat hover:text-white transition text-sm">Меню
-                        ресторана</button>
+                        class="text-[#FFCB90] font-montserrat hover:text-white transition text-sm">Меню</button>
                     <div x-show="open" @mouseenter="open = true" @mouseleave="open = false" x-transition
                         class="absolute left-0 mt-2 w-56 bg-[#FFCB90] rounded-xl shadow-lg p-2 z-50">
                         {% for category in menu_categories %}
@@ -31,9 +30,25 @@
                         </a>
                         {% endfor %}
                     </div>
+                </div> -->
+
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+
+                    <button class="text-[#FFCB90] font-montserrat hover:text-white transition text-sm">
+                        Меню доставки
+                    </button>
+
+                    <div x-show="open" x-transition
+                        class="absolute left-0 mt-2 w-56 bg-[#FFCB90] rounded-xl shadow-lg p-2 z-50">
+
+                        {% for category in menu_categories %}
+                        <a href="{{ category.get_absolute_url }}"
+                            class="block px-4 py-2 text-sm text-[#64352A] hover:bg-white rounded-lg transition">
+                            {{ category.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
                 </div>
-
-
 
                 <a href="{% url 'shop:index' %}#sales" class="scroll-mt-24 relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
@@ -134,40 +149,119 @@
         </div>
     </div>
 
-    <!-- Мобильное меню -->
-    <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1 flex flex-col">
+    <div id="mobile-menu" class="hidden md:hidden px-4 py-3 space-y-2 flex flex-col bg-[#64352A] font-montserrat">
 
-        <a href="#" class="relative px-3 py-2 rounded-md text-sm font-normal
+        <!-- Главная -->
+        <a href="{% url 'shop:index' %}"
+            class="block px-4 py-3 rounded-lg text-[#FFCB90] font-montserrat hover:bg-[#7a4638] transition text-xl font-normal">
+            Главная
+        </a>
+
+        <!-- Меню -->
+        <div x-data="{ open: false }" class="w-full">
+
+            <button @click="open = !open"
+                class="w-full flex justify-between items-center px-4 py-3 rounded-lg text-[#FFCB90] hover:bg-[#7a4638] transition text-xl font-normal">
+
+                <span>Меню доставки</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+
+            <div x-show="open" x-transition @click.outside="open = false"
+                class="mt-2 flex flex-col bg-[#FFCB90] rounded-lg overflow-hidden">
+
+                {% for category in menu_categories %}
+                <a href="{{ category.get_absolute_url }}"
+                    class="px-4 py-2 text-sm text-[#64352A] hover:bg-white transition">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <!-- О нас -->
+        <a href="{% url 'shop:about' %}"
+            class="block px-4 py-3 rounded-lg text-[#FFCB90] hover:bg-[#7a4638] transition text-xl font-normal">
+            О нас
+        </a>
+
+        <!-- Контакты -->
+        <a href="#" class="block px-4 py-3 rounded-lg text-[#FFCB90] hover:bg-[#7a4638] transition text-xl font-normal">
+            Контакты
+        </a>
+
+        <!-- Документы -->
+        <div x-data="{ open: false }" class="w-full">
+
+            <button @click="open = !open"
+                class="w-full flex justify-between items-center px-4 py-3 rounded-lg text-[#FFCB90] hover:bg-[#7a4638] transition text-xl font-normal">
+
+                <span>Документы</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+
+            <div x-show="open" x-transition @click.outside="open = false"
+                class="mt-2 flex flex-col bg-[#FFCB90] rounded-lg overflow-hidden">
+
+                <a href="#" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Доставка и оплата</a>
+                <a href="{% url 'shop:offer' %}" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Публичная
+                    оферта</a>
+                <a href="{% url 'shop:privacy' %}"
+                    class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Политика</a>
+                <a href="{% url 'shop:uslovia-dostavki' %}"
+                    class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Доставка</a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Мобильное меню -->
+    <!-- <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1 flex flex-col">
+
+        <a href="{% url 'shop:index' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
                             {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
                             hover:text-white transition">
             Главная
         </a>
-        <div class="relative group">
-            <button
-                class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
-                Категории
+        <div class="relative" x-data="{ open: false }">
+            <button @click="open = !open" class="text-[#FFCB90] font-montserrat hover:text-white transition text-sm">
+                Меню доставки
             </button>
+            <div x-show="open" @click.outside="open = false" x-transition
+                class="mt-2 w-full bg-[#FFCB90] rounded-xl shadow-lg p-2 z-50">
+
+                {% for category in menu_categories %}
+                <a href="{{ category.get_absolute_url }}"
+                    class="block px-4 py-2 text-sm text-[#64352A] hover:bg-white rounded-lg transition">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+
         </div>
+
         <a href="{% url 'shop:about' %}"
             class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
             О нас
         </a>
+
         <a href="#"
             class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
             Контакты
         </a>
-        <!-- дроб даун меню документов -->
+  
         <div x-data="{ open: false }" class="relative">
 
-            <!-- КНОПКА -->
             <button @click="open = !open" class="relative px-3 py-2 rounded-md text-sm font-normal
                     text-[#FFCB90] font-montserrat hover:text-white transition">
 
                 Документы
             </button>
 
-            <!-- ВЫПАДАЮЩЕЕ МЕНЮ -->
+          
             <div x-show="open" @click.outside="open = false" x-transition
                 class="mt-2 w-56 bg-white rounded-xl shadow-lg p-2 z-50">
 
@@ -190,8 +284,8 @@
             </div>
 
         </div>
-        <!-- дроб даун меню документов -->
-    </div>
+
+    </div> -->
 </nav>
 
 <script>

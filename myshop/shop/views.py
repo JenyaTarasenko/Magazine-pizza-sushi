@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product, Category
 from django.shortcuts import get_object_or_404
 from cart.forms import CartAddProductForm
-from django.db.models import Q, Case, When, IntegerField, Value
+from django.db.models import Q
 
 
 # главная страница 
@@ -53,45 +53,66 @@ def index(request):
 #     }
 #     return render(request, 'shop/product/product_search.html', context)
 
+# def product_search(request):
+#     query = request.GET.get('q', '').strip()
+
+#     products = Product.objects.all()
+
+#     if query:
+#         words = query.split()
+
+#         q = Q()
+
+#         for word in words:
+#             q |= (
+#                 Q(name__icontains=word) |
+#                 Q(description__icontains=word) |
+#                 Q(category__name__icontains=word)
+#             )
+
+#         products = products.filter(q).distinct()
+
+#         products = products.annotate(
+#             relevance=Case(
+#                 When(name__iexact=query, then=Value(100)),  # точное совпадение
+#                 When(name__icontains=query, then=Value(80)), # name contains
+#                 When(description__icontains=query, then=Value(50)),
+#                 When(category__name__icontains=query, then=Value(30)),
+#                 default=Value(0),
+#                 output_field=IntegerField(),
+#             )
+#         ).order_by('-relevance', '-id')
+
+#     context = {
+#         'query': query,
+#         'products_main': products,
+#     }
+#     return render(request, 'shop/product/product_search.html', context)
+
+
 def product_search(request):
     query = request.GET.get('q', '').strip()
 
-    products = Product.objects.all()
+    products_main = Product.objects.none()
+    category = None
 
     if query:
-        words = query.split()
+        products_main = Product.objects.filter(
+            name__icontains=query
+        )
 
-        q = Q()
-
-        for word in words:
-            q |= (
-                Q(name__icontains=word) |
-                Q(description__icontains=word) |
-                Q(category__name__icontains=word)
-            )
-
-        products = products.filter(q).distinct()
-
-        # 🔥 РЕЙТИНГ РЕЛЕВАНТНОСТИ
-        products = products.annotate(
-            relevance=Case(
-                When(name__iexact=query, then=Value(100)),  # точное совпадение
-                When(name__icontains=query, then=Value(80)), # name contains
-                When(description__icontains=query, then=Value(50)),
-                When(category__name__icontains=query, then=Value(30)),
-                default=Value(0),
-                output_field=IntegerField(),
-            )
-        ).order_by('-relevance', '-id')
+        # 👉 берем категорию первого найденного товара
+        first_product = products_main.first()
+        if first_product:
+            category = first_product.category
 
     context = {
         'query': query,
-        'products_main': products,
+        'products_main': products_main,
+        'category': category,
     }
+
     return render(request, 'shop/product/product_search.html', context)
-
-
-
 
 
 # def product_search(request):
