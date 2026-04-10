@@ -1,0 +1,372 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+<!---------------- главный экран-------------- -->
+
+<!-- экран дестоп -->
+<section class="hidden md:block relative h-screen">
+
+
+    <div class="absolute inset-0 
+      bg-[url('{% static 'image/about-des.webp' %}')] 
+      bg-cover bg-center">
+    </div>
+
+
+    <div class="absolute inset-0 bg-black/10"></div>
+
+
+    <div class="relative z-10 h-full flex items-center ">
+        <div class="max-w-[500px] p-8 text-white pl-10">
+            <div class="flex items-center gap-2 flex-row">
+                <p class="text-xl text-[#FFCB90] font-montserrat">
+                    Delivery Dnipro
+                </p>
+            </div>
+
+            <h1 class="text-5xl font-bold mt-5 font-montserrat">
+                <span class="text-[#FFCB90]">Готовим и доставляем</span> <span class="text-white font-normal">пиццу,
+                    суши, роллы и сеты в</span>
+                <span class="text-[#FFCB90]"> Днепре</span>
+            </h1>
+
+            <p class="mt-5 text-xl font-montserrat">
+                Качественные ингредиенты <span class="font-bold text-2xl text-[#FFCB90]">быстрая доставка 40
+                    минут</span>
+            </p>
+
+            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-white rounded-full 
+                hover:bg-white hover:text-black transition font-montserrat">
+                Заказать доставку
+            </a>
+            <!-- номера телефонов -->
+            <div class="flex flex-row flex-wrap gap-2 font-montserrat">
+                <div class="flex items-center mt-5 flex-row">
+                    <img src="{% static 'image/Map.svg' %}" class="w-6 h-6 mr-2">
+                    <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
+                </div>
+            </div>
+            <!-- номера телефонов -->
+        </div>
+    </div>
+
+</section>
+<!-- экран дестоп-->
+
+<!-- экран моб -->
+<section class="md:hidden relative w-full text-white">
+
+    <!-- Картинка -->
+    <img src="{% static 'image/about-mob.webp' %}" alt="Пицца" class="w-full h-auto block">
+    <div class="absolute inset-0 bg-black/10"></div>
+
+    <!-- Текст ПО ЦЕНТРУ -->
+    <div class="absolute inset-0 flex flex-col justify-center px-4 mt-[250px]">
+
+        <h1 class="text-2xl font-bold mt-3 font-montserrat">
+            <span class="text-[#FFCB90]">Готовим и доставляем</span> <span class="text-white font-normal">пиццу,
+                суши, роллы и сеты в</span>
+            <span class="text-[#FFCB90]"> Днепре</span>
+        </h1>
+
+        <p class="mt-5 text-sm font-montserrat">
+            Качественные ингредиенты <span class="font-bold text-lg text-[#FFCB90]">быстрая доставка 40 минут</span>
+        </p>
+
+        <a href="tel:+380990160002" class="block mt-5 text-center py-3 border-2 border-white rounded-full 
+              hover:bg-white hover:text-black transition max-w-[250px] font-montserrat">
+            Заказать доставку
+        </a>
+        <!-- номера телефонов -->
+        <div class="flex flex-row flex-wrap gap-2 font-montserrat">
+            <div class="flex items-center mt-5 flex-row">
+                <img src="{% static 'image/Map.svg' %}" class="w-6 h-6 mr-2">
+                <p class="text-sm">Dnipro, Ukraine <span class="font-bold text-lg">10:00-21:00</span></p>
+            </div>
+        </div>
+        <!-- номера телефонов -->
+    </div>
+</section>
+<!-- экран моб -->
+<!---------------- главный экран-------------- -->
+
+<!-- заголовок -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/obmen.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-2xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Обмен
+        <span class="text-[#BF0F0F] font-normal">и возврат</span>
+    </h4>
+</div>
+<!-- заголовок -->
+
+<!-- все карточки -->
+<div class="max-w-5xl mx-auto px-4 py-10 
+            grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Карточка -->
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            1. Общие положения
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Мы стремимся обеспечить высокое качество продукции и сервиса. Все блюда (суши, роллы и другая продукция)
+            готовятся непосредственно перед отправкой и относятся к категории скоропортящихся товаров.
+        </p>
+
+    </div>
+
+    <!-- Карточка -->
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            2. Основания для рассмотрения претензии
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Вы можете обратиться к нам в следующих случаях:
+            заказ доставлен не полностью
+            доставлено не то блюдо
+            обнаружены дефекты продукции (посторонние предметы, неприятный запах и т.д.)
+            продукция ненадлежащего качества
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            3. Порядок обращения
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Связаться с нами по телефону или через мессенджер в течение 1 часа после получения заказа
+            Сообщить номер заказа и описать проблему
+            По возможности предоставить фото или видео
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            4. Варианты решения
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            После рассмотрения обращения мы можем предложить:
+            замену блюда
+            возврат денежных средств
+            предоставление бонуса или скидки на следующий заказ
+        </p>
+
+    </div>
+
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            5. Отказ в возврате
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Компания оставляет за собой право отказать в возврате или компенсации в случаях:
+            истекло более 1 часа с момента получения заказа
+            отсутствуют доказательства проблемы
+            заказ был поврежден по вине клиента
+        </p>
+
+    </div>
+    <div class="bg-white/50 
+                rounded-2xl p-6 shadow-sm">
+
+        <h3 class="text-xl font-bold text-[#64352A] mb-3 font-montserrat">
+            6. Контактная информация
+        </h3>
+
+        <p class="text-[#64352A] text-sm leading-relaxed font-montserrat">
+            Телефон: +380990160002 Email: [EMAIL_ADDRESS] Адрес: г. Днепр, Украина
+        </p>
+
+    </div>
+
+</div>
+<!-- все карточки -->
+
+<!----------------Текст-------------- -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/dostavka.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Как заказать
+        <span class="text-[#BF0F0F] font-normal">доставку</span>
+    </h4>
+    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Доставка осуществляется в
+        течении 40 минут</h5>
+</div>
+<div class="flex items-center justify-center mt-5 flex-row px-1 text-center">
+    <a href="tel:+380990160002" class="inline-block mt-3 px-6 py-3 border-2 border-[#64352A] rounded-full 
+                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A] mb-5">
+        Заказать доставку
+    </a>
+</div>
+<!----------------Текст-------------- -->
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+    <!-- Карточка 1 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col font-montserrat">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                1
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Быстрый заказ по телефону</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Выберите пиццу или суши, добавьте в корзину, нажмите кнопку «Позвонить» и закажите доставку на дом.
+                Оплата наличными при получении.
+            </p>
+        </div>
+    </div>
+
+    <!-- Карточка 2 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                2
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Оплата онлайн</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Выберите пиццу или суши, добавьте в корзину, оплатите онлайн карточкой. Менеджер свяжется с вами для
+                уточнения адреса и времени доставки.
+            </p>
+        </div>
+    </div>
+
+    <!-- Карточка 3 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                3
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Свяжитесь с нами</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Добавьте товары в корзину и нажмите «Свяжитесь с нами». Мы быстро свяжемся с вами для подтверждения.
+            </p>
+        </div>
+    </div>
+    <!-- Карточка 2 -->
+    <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col">
+        <div class="flex flex-col items-start">
+            <div
+                class="w-12 h-12 bg-[#64352A] text-white rounded-full flex items-center justify-center font-bold text-2xl text-[#FFCB90]">
+                4
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-[#64352A]">Заказ на время или дату</h3>
+            <p class="text-sm text-[#64352A] mt-5">
+                Вы можете позвонить или нажав на кнопку «Свяжитесь с нами» заказать на время или на дату
+            </p>
+        </div>
+    </div>
+
+    <!-- Добавляй столько карточек, сколько нужно -->
+</div>
+<!----------------как заказать--------------->
+
+<!----------------почему мы лучше------------- -->
+<!----------------Текст-------------- -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <img src="{% static 'image/bast.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
+    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Почему
+        <span class="text-[#BF0F0F] font-normal">мы лучше</span>
+    </h4>
+</div>
+<!----------------Текст-------------- -->
+<div class="flex items-center justify-center mt-10 gap-5 flex-wrap">
+    <div class="w-[250px] bg-[#FFCB90]/60 rounded-[30px] overflow-hidden flex flex-col items-center text-center p-4">
+
+        <!-- 🖼 Картинка -->
+        <img src="{% static 'image/bast1.svg' %}" alt="Пицца доставка" class="w-[100px] object-cover" loading="lazy">
+
+        <!-- 📄 Текст -->
+        <h5 class="text-sm font-normal text-[#64352A] mt-4 uppercase">БЫСТРАЯ ДОСТАКА 30 МИНУТ</h5>
+    </div>
+
+    <div class="w-[250px] bg-[#FFCB90]/60 rounded-[30px] overflow-hidden flex flex-col items-center text-center p-4">
+
+        <!-- 🖼 Картинка -->
+        <img src="{% static 'image/bast2.svg' %}" alt="Пицца доставка" class="w-[80px] object-cover" loading="lazy">
+
+        <!-- 📄 Текст -->
+        <h5 class="text-sm font-normal text-[#64352A] mt-4 uppercase">Всегда горячая пицца</h5>
+    </div>
+
+    <div class="w-[250px] bg-[#FFCB90]/60 rounded-[30px] overflow-hidden flex flex-col items-center text-center p-4">
+
+        <!-- 🖼 Картинка -->
+        <img src="{% static 'image/bast3.svg' %}" alt="Пицца доставка" class="w-[60px] object-cover" loading="lazy">
+
+        <!-- 📄 Текст -->
+        <h5 class="text-sm font-normal text-[#64352A] mt-4 uppercase">Свежие продукты</h5>
+    </div>
+
+    <div class="w-[250px] bg-[#FFCB90]/60 rounded-[30px] overflow-hidden flex flex-col items-center text-center p-4">
+
+        <!-- 🖼 Картинка -->
+        <img src="{% static 'image/bast4.svg' %}" alt="Пицца доставка" class="w-[50px] object-cover" loading="lazy">
+
+        <!-- 📄 Текст -->
+        <h5 class="text-sm font-normal text-[#64352A] mt-4 uppercase">Большой выбор суши и роллов</h5>
+    </div>
+</div>
+<!----------------почему мы лучше------------- -->
+
+<!----------------смотри еще------------- -->
+<!-- смотри еще -->
+<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
+    <h4 class="text-2xl font-bold mb-2 font-montserrat text-[#64352A]">
+        Смотрите
+        <span class="text-[#BF0F0F] font-normal">также</span>
+    </h4>
+</div>
+
+
+<!-- смотри еще  -->
+<div class="mt-12 flex flex-wrap justify-center sm:gap-1 gap-2">
+
+    <a href="{% url 'shop:uslovia-dostavki' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Доставка и оплата
+    </a>
+
+    <a href="{% url 'shop:privacy' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Политика конфиденциальности
+    </a>
+
+    <a href="{% url 'shop:offer' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Публичная оферта
+    </a>
+    <a href="{% url 'shop:obmen' %}" class="px-5 py-2 rounded-full 
+              border border-[#64352A] text-[#64352A]
+              hover:bg-[#64352A] hover:text-white 
+              transition font-montserrat text-sm">
+        Обмен и возврат
+    </a>
+
+</div>
+<!-- смотри еще  -->
+<!----------------смотри еще------------- -->
+{% endblock %}

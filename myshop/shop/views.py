@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product, Category
 from django.shortcuts import get_object_or_404
 from cart.forms import CartAddProductForm
-from django.db.models import Q
+from django.db.models import Q, Case, When, IntegerField, Value
 
 
 # главная страница 
@@ -39,19 +39,83 @@ def index(request):
     return render(request, 'shop/product/index.html', context)
 
 # поиск отдельная страница
-def product_search(request):
-    query = request.GET.get('q', '')  # Получаем текст поиска из GET
-    products_main = Product.objects.filter(name__icontains=query) if query else []
+# def product_search(request):
+#     query = request.GET.get('q', '')  # Получаем текст поиска из GET
+#     products_main = Product.objects.filter(name__icontains=query) if query else []
 
-    # Для каждого продукта достаем его добавки
-    for product in products_main:
-        product.extras_main = product.extras.all()  # это добавки к конкретной пицце
+#     # Для каждого продукта достаем его добавки
+#     for product in products_main:
+#         product.extras_main = product.extras.all()  # это добавки к конкретной пицце
+
+#     context = {
+#         'query': query,
+#         'products_main': products_main,
+#     }
+#     return render(request, 'shop/product/product_search.html', context)
+
+def product_search(request):
+    query = request.GET.get('q', '').strip()
+
+    products = Product.objects.all()
+
+    if query:
+        words = query.split()
+
+        q = Q()
+
+        for word in words:
+            q |= (
+                Q(name__icontains=word) |
+                Q(description__icontains=word) |
+                Q(category__name__icontains=word)
+            )
+
+        products = products.filter(q).distinct()
+
+        # 🔥 РЕЙТИНГ РЕЛЕВАНТНОСТИ
+        products = products.annotate(
+            relevance=Case(
+                When(name__iexact=query, then=Value(100)),  # точное совпадение
+                When(name__icontains=query, then=Value(80)), # name contains
+                When(description__icontains=query, then=Value(50)),
+                When(category__name__icontains=query, then=Value(30)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ).order_by('-relevance', '-id')
 
     context = {
         'query': query,
-        'products_main': products_main,
+        'products_main': products,
     }
     return render(request, 'shop/product/product_search.html', context)
+
+
+
+
+
+# def product_search(request):
+#     query = request.GET.get('q', '').strip()
+
+#     products_main = Product.objects.none()
+
+#     if query:
+#         words = query.split()  # разбиваем "пицца маргарита"
+
+#         q_objects = Q()
+#         for word in words:
+#             q_objects |= Q(name__icontains=word)
+
+#         products_main = Product.objects.filter(q_objects)
+
+#     for product in products_main:
+#         product.extras_main = product.extras.all()
+
+#     context = {
+#         'query': query,
+#         'products_main': products_main,
+#     }
+#     return render(request, 'shop/product/product_search.html', context)
 
 
 
@@ -209,6 +273,12 @@ def offer(request):
 
 def obmen(request):
     return render(request, 'shop/product/obmen.html')
+
+def about(request):
+    return render(request, 'shop/product/about.html')
+
+def contact(request):
+    return render(request, 'shop/product/contact.html')
 
 # def cart(request):
 #     return render(request, 'shop/product/cart.html')

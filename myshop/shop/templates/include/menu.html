@@ -35,19 +35,19 @@
 
 
 
-                <a href="{% url 'shop:index' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
+                <a href="{% url 'shop:index' %}#sales" class="scroll-mt-24 relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
                             {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
                             hover:text-white transition">
                     Акции
                 </a>
-                <a href="" class="relative px-3 py-2 rounded-md text-sm font-normal
+                <a href="{% url 'shop:about' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
                             {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
                             hover:text-white transition">
                     О нас
                 </a>
-                <a href="" class="relative px-3 py-2 rounded-md text-sm font-normal
+                <a href="{% url 'shop:contact' %}" class="relative px-3 py-2 rounded-md text-sm font-normal
                             text-[#FFCB90] font-montserrat
                             {% if request.resolver_match.url_name == 'product_list' %}after:w-full{% endif %}
                             hover:text-white transition">
@@ -149,7 +149,7 @@
                 Категории
             </button>
         </div>
-        <a href="#"
+        <a href="{% url 'shop:about' %}"
             class="relative text-[#FFCB90] px-3 py-2 rounded-md text-sm font-normal hover:text-white transition">
             О нас
         </a>

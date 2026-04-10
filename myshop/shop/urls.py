@@ -14,6 +14,8 @@ urlpatterns = [
     path('uslovia-dostavki/', views.uslovia_dostavki, name='uslovia-dostavki'),#Условия доставки
     path('offer/', views.offer, name='offer'),#Публичная оферта
     path('obmen/', views.obmen, name='obmen'),#Обмен и возврат
+    path('about/', views.about, name='about'),#О нас
+    path('contact/', views.contact, name='contact'),#Контакты
     # path('cart/', views.cart, name='cart'),#Корзина
     
     # path('product-list-pizza/', views.product_list_pizza, name='product-list-pizza'),#Список пицц

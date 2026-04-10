@@ -149,10 +149,13 @@
                     Оформить заказ
                 </a>
             </div>
-
-
-            <div class="max-w-5xl mx-auto px-4 py-10 
-            grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-row justify-center items-center flex-wrap gap-20 mt-20 mx-auto mb-20">
+                <img src="{% static 'image/visa.svg' %}" alt="visa" class="w-[130px]">
+                <img src="{% static 'image/liqpay.svg' %}" alt="liqpay" class="w-[200px]">
+                <img src="{% static 'image/mastercard.svg' %}" alt="mastercard" class="w-[80px]">
+                <img src="{% static 'image/privat.svg' %}" alt="privat" class="w-[100px]">
+            </div>
+            <div class="max-w-5xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Карточка -->
                 <div class="bg-white/50
@@ -186,9 +189,7 @@
                 </div>
                 <!-- Карточка заказа -->
 
-
             </div>
-
             {% else %}
             <div class="flex flex-col items-center justify-center">
                 <p class="font-thin text-2xl font-montserrat mb-10 text-[#64352A]/40">Корзина пустая</p>
@@ -197,6 +198,12 @@
                           hover:bg-[#64352A] hover:text-white transition text-center">
                     Вернуться в магазин
                 </a>
+            </div>
+            <div class="flex flex-row justify-center items-center flex-wrap gap-20 mt-20 mb-20">
+                <img src="{% static 'image/visa.svg' %}" alt="visa" class="w-[130px]">
+                <img src="{% static 'image/liqpay.svg' %}" alt="liqpay" class="w-[200px]">
+                <img src="{% static 'image/mastercard.svg' %}" alt="mastercard" class="w-[80px]">
+                <img src="{% static 'image/privat.svg' %}" alt="privat" class="w-[100px]">
             </div>
             <div class="max-w-5xl mx-auto px-4 py-10 
             grid grid-cols-1 md:grid-cols-2 gap-6">

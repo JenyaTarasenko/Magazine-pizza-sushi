@@ -21,11 +21,9 @@
         {% endfor %}
     </div>
     {% else %}
-    <p class="text-center text-gray-500 mt-10 text-lg">
-        По запросу "{{ query }}" ничего не найдено.
-    </p>
+    <p class="text-center text-[#64352A] text-lg">По вашему запросу <span class="font-bold text-2xl">{{ query }}</span>
+        ничего не найдено <br> Попробуйте найти что-то другое</p>
     {% endif %}
-
 
 </div>
 {% endblock %}
