@@ -15,8 +15,8 @@ def get_liqpay_context(order):
         'order_id': str(order.id),
         'version': '3',
         'sandbox': 1, # Удали эту строку или поставь 0, когда будешь принимать реальные деньги
-        'server_url': 'https://твой-домен.com' + reverse('orders:liqpay_webhook'), # Сюда придет ответ от банка
-        'result_url': 'https://твой-домен.com' + reverse('orders:payment_success'), # Сюда вернется клиент
+        'server_url': 'https://sushipizza.pythonanywhere.com' + reverse('orders:liqpay_webhook'), # Сюда придет ответ от банка
+        'result_url': 'https://sushipizza.pythonanywhere.com' + reverse('orders:payment_success'), # Сюда вернется клиент
     }
     
     # Генерируем данные и подпись (signature)
