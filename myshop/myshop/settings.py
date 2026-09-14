@@ -23,17 +23,19 @@ else:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://SushiPizza.pythonanywhere.com",
-    "https://www.SushiPizza.pythonanywhere.com",
+    "https://sushipizza.pythonanywhere.com",
 ]
-
 ALLOWED_HOSTS = [
-    'SushiPizza.pythonanywhere.com',
-    'www.SushiPizza.pythonanywhere.com',
+    "sushipizza.pythonanywhere.com",
+    "localhost",
+    "127.0.0.1",
+    "www.sushipizza.pythonanywhere.com",
 ]
 # DEBUG = True
 # ALLOWED_HOSTS = ['*']
