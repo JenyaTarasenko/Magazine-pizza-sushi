@@ -14,11 +14,26 @@ LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY', default='')
 
 DEBUG = False
 
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://SushiPizza.pythonanywhere.com",
+    "https://www.SushiPizza.pythonanywhere.com",
+]
+
 ALLOWED_HOSTS = [
-    'http://127.0.0.1:8001',
-    '127.0.0.1',
-    'localhost',
-    'magazine.pythonanywhere.com',
+    'SushiPizza.pythonanywhere.com',
+    'www.SushiPizza.pythonanywhere.com',
 ]
 # DEBUG = True
 # ALLOWED_HOSTS = ['*']
@@ -102,16 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-if DEBUG:
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-else:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 LANGUAGE_CODE = 'en-us'
