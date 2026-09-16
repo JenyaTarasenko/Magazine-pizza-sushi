@@ -28,6 +28,7 @@ SECURE_PROXY_SSL_HEADER = (
     "https",
 )
 
+DEBUG = False
 CSRF_TRUSTED_ORIGINS = [
     "https://sushipizza.pythonanywhere.com",
 ]
@@ -37,8 +38,12 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "www.sushipizza.pythonanywhere.com",
 ]
-# DEBUG = True
-# ALLOWED_HOSTS = ['*']
+
+# ALLOWED_HOSTS = [
+#     "*",
+#     "localhost",
+#     "127.0.0.1"
+# ]
 
 # Application definition
 
@@ -58,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', #важно для статики 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
