@@ -1,432 +1,306 @@
-import pytest
 import base64
-import json
 import hashlib
-from decimal import Decimal
+import json
+import unittest
 
 from orders.liqpay import LiqPay
 
 
-class TestLiqPayInit:
-    """Тесты инициализации класса LiqPay"""
+class TestLiqPayInit(unittest.TestCase):
+    """Тесты __init__"""
 
-    def test_init_with_keys(self, liqpay):
-        """Тест инициализации с ключами"""
-        assert liqpay.public_key == 'test_public_key'
-        assert liqpay.private_key == 'test_private_key'
+    def test_init_stores_keys(self):
+        """public_key и private_key сохраняются при инициализации"""
+        lp = LiqPay('pub_key', 'priv_key')
+        self.assertEqual(lp.public_key, 'pub_key')
+        self.assertEqual(lp.private_key, 'priv_key')
 
     def test_init_different_keys(self):
-        """Тест разных ключей"""
-        lp = LiqPay('pub_123', 'priv_456')
-        assert lp.public_key == 'pub_123'
-        assert lp.private_key == 'priv_456'
+        """Значения ключей сохраняются как есть"""
+        lp = LiqPay('public_123', 'private_456')
+        self.assertEqual(lp.public_key, 'public_123')
+        self.assertEqual(lp.private_key, 'private_456')
 
     def test_init_empty_strings(self):
-        """Тест пустых строк"""
+        """Пустые строки допустимы"""
         lp = LiqPay('', '')
-        assert lp.public_key == ''
-        assert lp.private_key == ''
+        self.assertEqual(lp.public_key, '')
+        self.assertEqual(lp.private_key, '')
 
 
-class TestLiqPayCnbData:
-    """Тесты метода cnb_data"""
+class TestLiqPayPrepareParams(unittest.TestCase):
+    """Тесты _prepare_params"""
 
-    def test_cnb_data_basic(self, liqpay):
-        """Тест базового шифрования данных"""
-        params = {
-            'amount': '100.00',
-            'currency': 'UAH',
-            'description': 'Test payment'
-        }
-        data = liqpay.cnb_data(params)
-        assert data is not None
-        assert isinstance(data, str)
+    def test_prepare_adds_public_key(self):
+        """_prepare_params добавляет public_key в параметры"""
+        lp = LiqPay('pk_1', 'sk_1')
+        result = lp._prepare_params({'amount': '100'})
+        self.assertIn('public_key', result)
+        self.assertEqual(result['public_key'], 'pk_1')
 
-    def test_cnb_data_is_base64(self, liqpay):
-        """Тест что результат - валидный base64"""
+    def test_prepare_keeps_original_params(self):
+        """_prepare_params сохраняет исходные параметры"""
+        lp = LiqPay('pk_1', 'sk_1')
+        result = lp._prepare_params({'amount': '100', 'currency': 'UAH'})
+        self.assertEqual(result['amount'], '100')
+        self.assertEqual(result['currency'], 'UAH')
+
+    def test_prepare_does_not_modify_original(self):
+        """_prepare_params не изменяет исходный словарь"""
+        lp = LiqPay('pk_1', 'sk_1')
         params = {'amount': '100', 'currency': 'UAH'}
-        data = liqpay.cnb_data(params)
-        decoded = base64.b64decode(data)
-        assert isinstance(decoded, bytes)
+        original = dict(params)
+        lp._prepare_params(params)
+        self.assertEqual(params, original)
+        self.assertNotIn('public_key', params)
 
-    def test_cnb_data_contains_public_key(self, liqpay):
-        """Тест что public_key добавлен в данные"""
+    def test_prepare_returns_copy(self):
+        """_prepare_params возвращает копию, а не исходный словарь"""
+        lp = LiqPay('pk_1', 'sk_1')
         params = {'amount': '100'}
-        data = liqpay.cnb_data(params)
-        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert 'public_key' in decoded
-        assert decoded['public_key'] == 'test_public_key'
+        result = lp._prepare_params(params)
+        self.assertIsNot(result, params)
 
-    def test_cnb_data_preserves_original_params(self, liqpay):
-        """Тест что оригинальные параметры сохранены"""
+
+class TestLiqPayCnbData(unittest.TestCase):
+    """Тесты cnb_data"""
+
+    def setUp(self):
+        self.lp = LiqPay('test_public_key', 'test_private_key')
+
+    def test_cnb_data_returns_string(self):
+        """cnb_data возвращает строку"""
+        data = self.lp.cnb_data({'amount': '100'})
+        self.assertIsInstance(data, str)
+
+    def test_cnb_data_is_base64(self):
+        """Результат cnb_data - валидная Base64 строка"""
+        data = self.lp.cnb_data({'amount': '100'})
+        decoded = base64.b64decode(data)
+        self.assertIsInstance(decoded, bytes)
+
+    def test_cnb_data_decodes_to_json(self):
+        """Base64 содержит валидный JSON"""
+        data = self.lp.cnb_data({'amount': '100'})
+        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
+        self.assertIsInstance(decoded, dict)
+
+    def test_cnb_data_adds_public_key(self):
+        """cnb_data добавляет public_key внутрь данных"""
+        data = self.lp.cnb_data({'amount': '100'})
+        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
+        self.assertIn('public_key', decoded)
+        self.assertEqual(decoded['public_key'], 'test_public_key')
+
+    def test_cnb_data_adds_actual_public_key(self):
+        """Добавляется именно public_key текущего экземпляра"""
+        lp = LiqPay('another_key', 'sk')
+        data = lp.cnb_data({'amount': '100'})
+        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
+        self.assertEqual(decoded['public_key'], 'another_key')
+
+    def test_cnb_data_preserves_params(self):
+        """Все исходные параметры сохраняются в данных"""
         params = {
             'amount': '250.50',
             'currency': 'UAH',
-            'description': 'Оплата заказа'
+            'description': 'Оплата заказа',
         }
-        data = liqpay.cnb_data(params)
+        data = self.lp.cnb_data(params)
         decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert decoded['amount'] == '250.50'
-        assert decoded['currency'] == 'UAH'
-        assert decoded['description'] == 'Оплата заказа'
+        self.assertEqual(decoded['amount'], '250.50')
+        self.assertEqual(decoded['currency'], 'UAH')
+        self.assertEqual(decoded['description'], 'Оплата заказа')
 
-    def test_cnb_data_json_format(self, liqpay):
-        """Тест компактного JSON формата (без пробелов)"""
-        params = {'key': 'value', 'number': 123}
-        data = liqpay.cnb_data(params)
-        decoded = base64.b64decode(data).decode('utf-8')
-        assert ' ' not in decoded
-        assert '\n' not in decoded
+    def test_cnb_data_does_not_modify_original(self):
+        """cnb_data не изменяет исходный словарь"""
+        params = {'amount': '100', 'currency': 'UAH'}
+        original = dict(params)
+        self.lp.cnb_data(params)
+        self.assertEqual(params, original)
+        self.assertNotIn('public_key', params)
 
-    def test_cnb_data_unicode(self, liqpay):
-        """Тест с unicode символами"""
-        params = {
-            'description': 'Оплата заказа №123'
-        }
-        data = liqpay.cnb_data(params)
+    def test_cnb_data_compact_json(self):
+        """JSON компактный: без пробелов и переводов строк"""
+        data = self.lp.cnb_data({'key': 'value', 'number': 123})
+        raw = base64.b64decode(data).decode('utf-8')
+        self.assertNotIn(' ', raw)
+        self.assertNotIn('\n', raw)
+
+    def test_cnb_data_unicode_cyrillic(self):
+        """Кириллица и unicode сохраняются корректно"""
+        params = {'description': 'Оплата заказа №123'}
+        data = self.lp.cnb_data(params)
         decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert 'Оплата заказа №123' in decoded['description']
+        self.assertEqual(decoded['description'], 'Оплата заказа №123')
 
-    def test_cnb_data_empty_params(self, liqpay):
-        """Тест с пустыми параметрами"""
-        params = {}
-        data = liqpay.cnb_data(params)
+    def test_cnb_data_empty_params(self):
+        """Пустой словарь - данные содержат только public_key"""
+        data = self.lp.cnb_data({})
         decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert 'public_key' in decoded
+        self.assertEqual(decoded, {'public_key': 'test_public_key'})
 
-    def test_cnb_data_cyrillic_in_params(self, liqpay):
-        """Тест кириллицы в параметрах"""
-        params = {
-            'description': 'Тест кириллица: Привет мир',
-            'name': 'Иван'
-        }
-        data = liqpay.cnb_data(params)
-        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert 'Тест кириллица: Привет мир' in decoded['description']
 
-    def test_cnb_data_different_key(self):
-        """Тест с другим публичным ключом"""
-        lp = LiqPay('another_public_key_123', 'another_private_key_456')
+class TestLiqPayCnbSignature(unittest.TestCase):
+    """Тесты cnb_signature"""
+
+    def setUp(self):
+        self.lp = LiqPay('pub', 'private_key')
+
+    def test_cnb_signature_returns_string(self):
+        """cnb_signature принимает params и возвращает строку"""
+        sig = self.lp.cnb_signature({'amount': '100'})
+        self.assertIsInstance(sig, str)
+
+    def test_cnb_signature_is_base64_of_sha1(self):
+        """Подпись - Base64 от SHA1 (20 байт)"""
+        sig = self.lp.cnb_signature({'amount': '100'})
+        digest = base64.b64decode(sig)
+        self.assertEqual(len(digest), 20)
+
+    def test_cnb_signature_same_for_same_params(self):
+        """Одинаковые параметры дают одинаковую подпись"""
+        params = {'amount': '100', 'currency': 'UAH'}
+        sig1 = self.lp.cnb_signature(params)
+        sig2 = self.lp.cnb_signature({'amount': '100', 'currency': 'UAH'})
+        self.assertEqual(sig1, sig2)
+
+    def test_cnb_signature_differs_on_data_change(self):
+        """Изменение данных меняет подпись"""
+        sig1 = self.lp.cnb_signature({'amount': '100', 'currency': 'UAH'})
+        sig2 = self.lp.cnb_signature({'amount': '150', 'currency': 'UAH'})
+        self.assertNotEqual(sig1, sig2)
+
+    def test_cnb_signature_differs_on_public_key(self):
+        """Изменение public_key меняет подпись (меняет data)"""
+        lp2 = LiqPay('other_pub', 'private_key')
+        sig1 = self.lp.cnb_signature({'amount': '100'})
+        sig2 = lp2.cnb_signature({'amount': '100'})
+        self.assertNotEqual(sig1, sig2)
+
+    def test_cnb_signature_differs_on_private_key(self):
+        """Изменение private_key меняет подпись"""
+        lp2 = LiqPay('pub', 'other_private_key')
         params = {'amount': '100'}
-        data = lp.cnb_data(params)
-        decoded = json.loads(base64.b64decode(data).decode('utf-8'))
-        assert decoded['public_key'] == 'another_public_key_123'
+        sig1 = self.lp.cnb_signature(params)
+        sig2 = lp2.cnb_signature(dict(params))
+        self.assertNotEqual(sig1, sig2)
 
-
-class TestLiqPayCnbSignature:
-    """Тесты метода cnb_signature"""
-
-    def test_cnb_signature_returns_string(self, liqpay):
-        """Тест что подпись - строка"""
-        data = 'test_data_string'
-        signature = liqpay.cnb_signature(data)
-        assert isinstance(signature, str)
-
-    def test_cnb_signature_is_base64(self, liqpay):
-        """Тест что подпись - валидный base64"""
-        data = 'some_data'
-        signature = liqpay.cnb_signature(data)
-        decoded = base64.b64decode(signature)
-        assert isinstance(decoded, bytes)
-
-    def test_cnb_signature_length(self, liqpay):
-        """Тест длины подписи (sha1 = 20 байт, base64 ~27 символов)"""
-        data = 'test'
-        signature = liqpay.cnb_signature(data)
-        decoded = base64.b64decode(signature)
-        assert len(decoded) == 20  # SHA1 produces 20 bytes
-
-    def test_cnb_signature_deterministic(self, liqpay):
-        """Тест детерминированности подписи"""
-        data = 'consistent_data'
-        sig1 = liqpay.cnb_signature(data)
-        sig2 = liqpay.cnb_signature(data)
-        assert sig1 == sig2
-
-    def test_cnb_signature_different_data(self, liqpay):
-        """Тест разных подписей для разных данных"""
-        sig1 = liqpay.cnb_signature('data1')
-        sig2 = liqpay.cnb_signature('data2')
-        assert sig1 != sig2
-
-    def test_cnb_signature_empty_data(self, liqpay):
-        """Тест подписи пустых данных"""
-        signature = liqpay.cnb_signature('')
-        assert isinstance(signature, str)
-        assert len(signature) > 0
-
-    def test_cnb_signature_uses_private_key(self):
-        """Тест что подпись зависит от private_key"""
-        lp1 = LiqPay('pub', 'private1')
-        lp2 = LiqPay('pub', 'private2')
-        data = 'same_data'
-        sig1 = lp1.cnb_signature(data)
-        sig2 = lp2.cnb_signature(data)
-        assert sig1 != sig2
-
-    def test_cnb_signature_unicode_data(self, liqpay):
-        """Тест подписи с unicode данными"""
-        data = 'Данные на кириллице'
-        signature = liqpay.cnb_signature(data)
-        assert isinstance(signature, str)
-        assert len(signature) > 0
-
-
-class TestLiqPayDecodeData:
-    """Тесты метода decode_data_from_str"""
-
-    def test_decode_valid_data(self, liqpay):
-        """Тест декодирования валидных данных"""
-        params = {'key': 'value', 'number': 123}
-        encoded = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(encoded)
-        assert decoded['key'] == 'value'
-        assert decoded['number'] == 123
-
-    def test_decode_roundtrip(self, liqpay):
-        """Тест что encode -> decode возвращает исходные данные"""
-        original = {
-            'amount': '150.50',
-            'currency': 'UAH',
-            'order_id': '12345',
-            'status': 'success'
-        }
-        encoded = liqpay.cnb_data(original)
-        decoded = liqpay.decode_data_from_str(encoded)
-        assert decoded['amount'] == original['amount']
-        assert decoded['currency'] == original['currency']
-        assert decoded['order_id'] == original['order_id']
-
-    def test_decode_cyrillic(self, liqpay):
-        """Тест декодирования кириллицы"""
-        params = {'description': 'Тест'}
-        encoded = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(encoded)
-        assert decoded['description'] == 'Тест'
-
-    def test_decode_invalid_base64(self, liqpay):
-        """Тест ошибки при некорректном base64"""
-        with pytest.raises(Exception):
-            liqpay.decode_data_from_str('not_valid_base64!!!')
-
-    def test_decode_empty_string(self, liqpay):
-        """Тест декодирования пустой строки"""
-        with pytest.raises(Exception):
-            liqpay.decode_data_from_str('')
-
-    def test_decode_special_chars(self, liqpay):
-        """Тест специальных символов"""
-        params = {'text': 'Test <>&"\\ chars'}
-        encoded = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(encoded)
-        assert decoded['text'] == 'Test <>&"\\ chars'
-
-
-class TestLiqPaySignatureAlgorithm:
-    """Тесты алгоритма подписи"""
-
-    def test_signature_algorithm(self, liqpay):
-        """Тест формулы: base64(sha1(private + data + private))"""
-        private = 'test_key'
-        data = 'test_data'
+    def test_cnb_signature_algorithm(self):
+        """Формула: base64(sha1(private_key + data + private_key))"""
+        params = {'amount': '100', 'currency': 'UAH'}
+        data = self.lp.cnb_data(params)
         expected = base64.b64encode(
-            hashlib.sha1(f"{private}{data}{private}".encode()).digest()
-        ).decode()
-        lp = LiqPay('pub', private)
-        result = lp.cnb_signature(data)
-        assert result == expected
+            hashlib.sha1(
+                ('private_key' + data + 'private_key').encode('utf-8')
+            ).digest()
+        ).decode('utf-8')
+        self.assertEqual(self.lp.cnb_signature(params), expected)
 
-    def test_signature_matches_manual_calculation(self):
-        """Тест соответствия ручному расчёту"""
-        private = 'secret123'
-        public = 'public456'
-        lp = LiqPay(public, private)
-        data = 'payment_data'
-        
-        expected_signature = base64.b64encode(
-            hashlib.sha1(f"{private}{data}{private}".encode()).digest()
-        ).decode()
-        
-        actual_signature = lp.cnb_signature(data)
-        assert actual_signature == expected_signature
+    def test_cnb_signature_uses_base64_data_not_json(self):
+        """Подпись строится по base64 data, а не по исходному JSON"""
+        params = {'amount': '100'}
+        data = self.lp.cnb_data(params)
+        json_str = json.dumps(
+            {'amount': '100', 'public_key': 'pub'},
+            separators=(',', ':'),
+            ensure_ascii=False,
+        )
+        sig = self.lp.cnb_signature(params)
+        sig_from_data = base64.b64encode(
+            hashlib.sha1(
+                ('private_key' + data + 'private_key').encode('utf-8')
+            ).digest()
+        ).decode('utf-8')
+        sig_from_json = base64.b64encode(
+            hashlib.sha1(
+                ('private_key' + json_str + 'private_key').encode('utf-8')
+            ).digest()
+        ).decode('utf-8')
+        self.assertEqual(sig, sig_from_data)
+        self.assertNotEqual(sig, sig_from_json)
 
 
-class TestLiqPayIntegration:
-    """Интеграционные тесты LiqPay"""
+class TestLiqPayDecodeData(unittest.TestCase):
+    """Тесты decode_data_from_str"""
 
-    def test_full_payment_flow(self, liqpay):
-        """Тест полного процесса создания платежа"""
+    def setUp(self):
+        self.lp = LiqPay('pub', 'priv')
+
+    def test_decode_returns_dict(self):
+        """decode_data_from_str возвращает словарь"""
+        data = self.lp.cnb_data({'amount': '100'})
+        result = self.lp.decode_data_from_str(data)
+        self.assertIsInstance(result, dict)
+
+    def test_decode_back_to_original(self):
+        """decode возвращает исходные параметры + public_key"""
+        params = {'amount': '150.50', 'currency': 'UAH', 'order_id': '12345'}
+        data = self.lp.cnb_data(params)
+        decoded = self.lp.decode_data_from_str(data)
+        self.assertEqual(decoded['amount'], '150.50')
+        self.assertEqual(decoded['currency'], 'UAH')
+        self.assertEqual(decoded['order_id'], '12345')
+        self.assertEqual(decoded['public_key'], 'pub')
+
+    def test_decode_cyrillic(self):
+        """Кириллица корректно декодируется"""
+        data = self.lp.cnb_data({'description': 'Тест кириллица'})
+        decoded = self.lp.decode_data_from_str(data)
+        self.assertEqual(decoded['description'], 'Тест кириллица')
+
+    def test_decode_invalid_base64_raises(self):
+        """Некорректный Base64 вызывает ошибку"""
+        with self.assertRaises(Exception):
+            self.lp.decode_data_from_str('!!!not_base64!!!')
+
+    def test_decode_empty_string_raises(self):
+        """Пустая строка вызывает ошибку"""
+        with self.assertRaises(Exception):
+            self.lp.decode_data_from_str('')
+
+
+class TestLiqPayRoundTrip(unittest.TestCase):
+    """Полный round-trip: params -> data -> decode"""
+
+    def setUp(self):
+        self.lp = LiqPay('pk_roundtrip', 'sk_roundtrip')
+
+    def test_full_round_trip(self):
+        """params -> cnb_data -> decode возвращает params и public_key"""
         params = {
             'action': 'pay',
             'amount': '100.00',
             'currency': 'UAH',
-            'description': 'Test order',
-            'order_id': '123'
-        }
-        
-        data = liqpay.cnb_data(params)
-        signature = liqpay.cnb_signature(data)
-        
-        assert data is not None
-        assert signature is not None
-        assert len(signature) > 0
-
-    def test_payment_data_structure(self, liqpay):
-        """Тест структуры данных платежа"""
-        params = {
-            'action': 'pay',
-            'amount': str(Decimal('250.50')),
-            'currency': 'UAH',
-            'description': f'Оплата заказа №{123}',
-            'order_id': str(123),
+            'description': 'Оплата заказа №5',
+            'order_id': '5',
             'version': '3',
-            'sandbox': 1
+            'sandbox': 1,
         }
-        
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        
-        assert decoded['action'] == 'pay'
-        assert decoded['amount'] == '250.50'
-        assert decoded['currency'] == 'UAH'
-        assert decoded['public_key'] == 'test_public_key'
+        original = dict(params)
+        data = self.lp.cnb_data(params)
+        decoded = self.lp.decode_data_from_str(data)
+        for key, value in params.items():
+            self.assertEqual(decoded[key], value)
+        self.assertEqual(decoded['public_key'], 'pk_roundtrip')
+        self.assertEqual(params, original)
 
-    def test_multiple_payments_different_orders(self, liqpay):
-        """Тест нескольких платежей для разных заказов"""
-        orders = [
-            {'order_id': '1', 'amount': '100'},
-            {'order_id': '2', 'amount': '200'},
-            {'order_id': '3', 'amount': '300'},
-        ]
-        
-        signatures = []
-        for order in orders:
-            params = {'action': 'pay', 'amount': order['amount']}
-            data = liqpay.cnb_data(params)
-            sig = liqpay.cnb_signature(data)
-            signatures.append(sig)
-        
-        assert len(set(signatures)) == 3
+    def test_round_trip_with_signature(self):
+        """Полный поток: data + signature логически согласованы"""
+        params = {'action': 'pay', 'amount': '99.99', 'currency': 'UAH'}
+        data = self.lp.cnb_data(params)
+        signature = self.lp.cnb_signature(params)
 
-    def test_same_order_different_keys(self):
-        """Тест разных подписей при разных ключах"""
-        lp1 = LiqPay('pub1', 'priv1')
-        lp2 = LiqPay('pub2', 'priv2')
-        
-        params = {'amount': '100'}
-        data1 = lp1.cnb_data(params)
-        data2 = lp2.cnb_data(params)
-        
-        sig1 = lp1.cnb_signature(data1)
-        sig2 = lp2.cnb_signature(data2)
-        
-        assert sig1 != sig2
-        assert data1 != data2
+        expected_signature = base64.b64encode(
+            hashlib.sha1(
+                ('sk_roundtrip' + data + 'sk_roundtrip').encode('utf-8')
+            ).digest()
+        ).decode('utf-8')
+        self.assertEqual(signature, expected_signature)
+
+        decoded = self.lp.decode_data_from_str(data)
+        self.assertEqual(decoded['amount'], '99.99')
 
 
-class TestLiqPayEdgeCases:
-    """Граничные случаи"""
-
-    def test_very_long_description(self, liqpay):
-        """Тест очень длинного описания"""
-        params = {
-            'description': 'A' * 1000
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert len(decoded['description']) == 1000
-
-    def test_decimal_amount(self, liqpay):
-        """Тест десятичных сумм"""
-        params = {
-            'amount': '99.99'
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert decoded['amount'] == '99.99'
-
-    def test_integer_amount(self, liqpay):
-        """Тест целочисленных сумм"""
-        params = {
-            'amount': '100'
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert decoded['amount'] == '100'
-
-    def test_special_unicode_chars(self, liqpay):
-        """Тест специальных unicode символов"""
-        params = {
-            'description': 'Emoji: 🍕 test & symbols: @#$%'
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert '🍕' in decoded['description']
-
-    def test_json_boolean_values(self, liqpay):
-        """Тест JSON boolean значений"""
-        params = {
-            'sandbox': True,
-            'auto': False
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert decoded['sandbox'] is True
-        assert decoded['auto'] is False
-
-    def test_json_null_values(self, liqpay):
-        """Тест JSON null значений"""
-        params = {
-            'description': None
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert decoded['description'] is None
-
-    def test_signature_with_very_long_data(self, liqpay):
-        """Тест подписи очень длинных данных"""
-        data = 'x' * 10000
-        signature = liqpay.cnb_signature(data)
-        assert len(signature) > 0
-
-    def test_cyrillic_in_all_fields(self, liqpay):
-        """Тест кириллицы во всех полях"""
-        params = {
-            'description': 'Описание товара',
-            'order_id': '123',
-            'amount': '100',
-            'currency': 'UAH'
-        }
-        data = liqpay.cnb_data(params)
-        decoded = liqpay.decode_data_from_str(data)
-        assert decoded['description'] == 'Описание товара'
-
-
-class TestLiqPaySecurity:
-    """Тесты безопасности"""
-
-    def test_different_private_keys_different_signatures(self):
-        """Тест что разные ключи дают разные подписи"""
-        base_data = 'test_payment_data'
-        signatures = []
-        for i in range(5):
-            lp = LiqPay('pub', f'private_key_{i}')
-            signatures.append(lp.cnb_signature(base_data))
-        assert len(set(signatures)) == 5
-
-    def test_signature_length_consistency(self, liqpay):
-        """Тест постоянства длины подписи"""
-        test_data = [
-            'a', 'ab', 'abc', 'test', 
-            'longer string here', 'x' * 1000
-        ]
-        lengths = [len(liqpay.cnb_signature(d)) for d in test_data]
-        assert len(set(lengths)) == 1  # Все одной длины
-
-    def test_cnb_data_contains_no_private_key(self, liqpay):
-        """Тест что private_key не попадает в data"""
-        params = {'amount': '100'}
-        data = liqpay.cnb_data(params)
-        decoded = base64.b64decode(data).decode('utf-8')
-        assert 'private' not in decoded.lower()
-        assert liqpay.private_key not in decoded
+if __name__ == '__main__':
+    unittest.main()

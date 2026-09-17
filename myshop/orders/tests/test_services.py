@@ -1,318 +1,253 @@
-import pytest
-from unittest.mock import patch, MagicMock
+import base64
+import hashlib
+import json
 from decimal import Decimal
-from django.test import override_settings
 
-from orders.models import Order, OrderItem
+from django.conf import settings
+from django.test import TestCase, override_settings
+from django.urls import reverse
+
+from orders.models import Order, OrderItem, Payment
+from orders.services import get_liqpay_context
 from shop.models import Category, Product
 
+PUBLIC_KEY = 'test_public_key'
+PRIVATE_KEY = 'test_private_key'
+SITE_BASE = 'https://sushipizza.pythonanywhere.com'
 
-@pytest.fixture
-def category(db):
-    return Category.objects.create(name='Пицца', slug='pizza')
-
-@pytest.fixture
-def product(db, category):
-    return Product.objects.create(
-        name='Пепперони',
-        slug='pepperoni',
-        category=category,
-        price=Decimal('150.00'),
-        weight=500,
-        description='Вкусная пицца',
-        is_extra=False
-    )
-
-@pytest.fixture
-def order(db):
-    return Order.objects.create(
-        first_name='Иван',
-        last_name='Иванов',
-        email='ivan@example.com',
-        phone='+380991234567',
-        paid=False
-    )
-
-@pytest.fixture
-def order_with_items(db, order, product):
-    OrderItem.objects.create(
-        order=order,
-        product=product,
-        price=Decimal('150.00'),
-        quantity=2
-    )
-    return order
+EXPECTED_SERVER_URL = SITE_BASE + reverse('orders:liqpay_webhook')
+EXPECTED_RESULT_URL = SITE_BASE + reverse('orders:payment_success')
 
 
-class TestGetLiqpayContext:
-    """Тесты для функции get_liqpay_context"""
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_returns_dict_with_data_and_signature(self, mock_settings, mock_liqpay, order):
-        """Тест что функция возвращает словарь с data и signature"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay_instance.cnb_data.return_value = 'encoded_data'
-        mock_liqpay_instance.cnb_signature.return_value = 'signature_value'
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        result = get_liqpay_context(order)
-
-        assert 'data' in result
-        assert 'signature' in result
-        assert result['data'] == 'encoded_data'
-        assert result['signature'] == 'signature_value'
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_calls_liqpay_methods(self, mock_settings, mock_liqpay, order):
-        """Тест вызова методов LiqPay"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        mock_liqpay_instance.cnb_data.assert_called_once()
-        mock_liqpay_instance.cnb_signature.assert_called_once()
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_cnb_data_receives_correct_params(self, mock_settings, mock_liqpay, order):
-        """Тест что в cnb_data передаются правильные параметры"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert 'action' in call_args
-        assert call_args['action'] == 'pay'
-        assert 'amount' in call_args
-        assert 'currency' in call_args
-        assert 'order_id' in call_args
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_amount_uses_order_total_cost(self, mock_settings, mock_liqpay, order_with_items):
-        """Тест что amount берется из get_total_cost"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order_with_items)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        expected_amount = str(order_with_items.get_total_cost())
-        assert call_args['amount'] == expected_amount
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_currency_is_uah(self, mock_settings, mock_liqpay, order):
-        """Тест что валюта - UAH"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert call_args['currency'] == 'UAH'
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_order_id_is_string(self, mock_settings, mock_liqpay, order):
-        """Тест что order_id - строка"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert isinstance(call_args['order_id'], str)
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_description_contains_order_id(self, mock_settings, mock_liqpay, order):
-        """Тест что description содержит номер заказа"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert str(order.id) in call_args['description']
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_sandbox_mode(self, mock_settings, mock_liqpay, order):
-        """Тест что sandbox установлен"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert 'sandbox' in call_args
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_version_present(self, mock_settings, mock_liqpay, order):
-        """Тест что version присутствует"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert 'version' in call_args
+def decode_data(data: str) -> dict:
+    """Декодирует data из base64 в словарь."""
+    return json.loads(base64.b64decode(data).decode('utf-8'))
 
 
-class TestGetLiqpayContextEdgeCases:
-    """Граничные случаи для get_liqpay_context"""
+def manual_signature(private_key: str, data: str) -> str:
+    """Считает подпись LiqPay вручную: base64(sha1(private + data + private))."""
+    return base64.b64encode(
+        hashlib.sha1(
+            (private_key + data + private_key).encode('utf-8')
+        ).digest()
+    ).decode('utf-8')
 
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_empty_order_cost(self, mock_settings, mock_liqpay, order):
-        """Тест заказа с нулевой стоимостью"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
 
-        result = get_liqpay_context(order)
+@override_settings(
+    LIQPAY_PUBLIC_KEY=PUBLIC_KEY,
+    LIQPAY_PRIVATE_KEY=PRIVATE_KEY,
+    SECURE_SSL_REDIRECT=False,
+    SESSION_COOKIE_SECURE=False,
+    CSRF_COOKIE_SECURE=False,
+)
+class BaseLiqpayContextTestCase(TestCase):
+    """Базовая подготовка данных для тестов get_liqpay_context."""
 
-        assert result is not None
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert call_args['amount'] == '0'
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_decimal_amount(self, mock_settings, mock_liqpay, order_with_items):
-        """Тест десятичной суммы"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order_with_items)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        amount = Decimal(call_args['amount'])
-        assert amount == Decimal('300.00')
-
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_large_order_amount(self, mock_settings, mock_liqpay, db, product):
-        """Тест заказа с большой суммой"""
-        from orders.services import get_liqpay_context
-        
-        order = Order.objects.create(
-            first_name='Тест',
-            last_name='Тест',
-            email='test@test.com',
-            phone='+380000000000'
+    @classmethod
+    def setUpTestData(cls):
+        cls.category = Category.objects.create(name='Пицца', slug='pizza')
+        cls.product = Product.objects.create(
+            name='Пепперони',
+            slug='pepperoni',
+            category=cls.category,
+            price=Decimal('150.00'),
+            weight=500,
+            description='Вкусная пицца',
+            is_extra=False,
+        )
+        cls.extra = Product.objects.create(
+            name='Сыр',
+            slug='syr',
+            category=cls.category,
+            price=Decimal('25.00'),
+            weight=50,
+            description='Дополнительный сыр',
+            is_extra=True,
+        )
+        cls.order = Order.objects.create(
+            first_name='Иван',
+            last_name='Иванов',
+            email='ivan@example.com',
+            phone='+380991234567',
+            paid=False,
         )
         OrderItem.objects.create(
-            order=order,
-            product=product,
-            price=Decimal('10000.00'),
-            quantity=10
+            order=cls.order,
+            product=cls.product,
+            price=Decimal('150.00'),
+            quantity=2,
         )
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
-
-        get_liqpay_context(order)
-
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert Decimal(call_args['amount']) == Decimal('100000.00')
+        OrderItem.objects.create(
+            order=cls.order,
+            product=cls.extra,
+            price=Decimal('25.00'),
+            quantity=3,
+        )
 
 
-class TestGetLiqpayContextURLs:
-    """Тесты URL в get_liqpay_context"""
+class TestGetLiqpayContextStructure(BaseLiqpayContextTestCase):
+    """1. Структура возвращаемого словаря."""
 
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_server_url_present(self, mock_settings, mock_liqpay, order):
-        """Тест наличия server_url"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
+    def test_returns_dict_with_data_and_signature(self):
+        result = get_liqpay_context(self.order)
+        self.assertIsInstance(result, dict, 'Функция должна возвращать словарь')
+        self.assertIn('data', result, 'Словарь должен содержать ключ data')
+        self.assertIn('signature', result, 'Словарь должен содержать ключ signature')
 
-        get_liqpay_context(order)
+    def test_data_is_non_empty_base64_string(self):
+        result = get_liqpay_context(self.order)
+        data = result['data']
+        self.assertIsInstance(data, str, 'data должна быть строкой')
+        self.assertTrue(data, 'data не должна быть пустой')
+        decoded = base64.b64decode(data)
+        self.assertIsInstance(decoded, bytes, 'data должна декодироваться из base64')
 
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert 'server_url' in call_args
+    def test_signature_is_non_empty_base64_of_sha1(self):
+        result = get_liqpay_context(self.order)
+        signature = result['signature']
+        self.assertIsInstance(signature, str, 'signature должна быть строкой')
+        self.assertTrue(signature, 'signature не должна быть пустой')
+        digest = base64.b64decode(signature)
+        self.assertEqual(len(digest), 20, 'SHA-1 дайджест занимает ровно 20 байт')
 
-    @patch('orders.services.LiqPay')
-    @patch('orders.services.settings')
-    def test_result_url_present(self, mock_settings, mock_liqpay, order):
-        """Тест наличия result_url"""
-        from orders.services import get_liqpay_context
-        
-        mock_settings.LIQPAY_PUBLIC_KEY = 'test_public'
-        mock_settings.LIQPAY_PRIVATE_KEY = 'test_private'
-        
-        mock_liqpay_instance = MagicMock()
-        mock_liqpay.return_value = mock_liqpay_instance
 
-        get_liqpay_context(order)
+class TestGetLiqpayContextDataContent(BaseLiqpayContextTestCase):
+    """2. Декодирование и валидация содержимого data."""
 
-        call_args = mock_liqpay_instance.cnb_data.call_args[0][0]
-        assert 'result_url' in call_args
+    def test_data_decodes_to_json(self):
+        result = get_liqpay_context(self.order)
+        decoded = decode_data(result['data'])
+        self.assertIsInstance(decoded, dict, 'data должна декодироваться в JSON-объект')
+
+    def test_data_contains_public_key(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(
+            decoded.get('public_key'),
+            PUBLIC_KEY,
+            'В data должен быть добавлен public_key из настроек',
+        )
+
+    def test_order_id_matches_order(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(
+            str(decoded.get('order_id')),
+            str(self.order.id),
+            'order_id в data должен совпадать с Order.id',
+        )
+
+    def test_amount_matches_order_total(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        expected = str(self.order.get_total_cost())
+        self.assertEqual(
+            str(decoded.get('amount')),
+            expected,
+            f'amount должен быть равен итоговой сумме заказа ({expected})',
+        )
+
+    def test_currency_is_uah(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(decoded.get('currency'), 'UAH', 'Валюта должна быть UAH')
+
+    def test_action_is_pay(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(decoded.get('action'), 'pay', 'action должно быть pay')
+
+    def test_version_is_3(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertIn(
+            decoded.get('version'),
+            ('3', 3),
+            'version должен быть "3" или 3',
+        )
+
+    def test_sandbox_is_1(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertIn(
+            decoded.get('sandbox'),
+            (1, '1'),
+            'sandbox должен быть 1 или "1"',
+        )
+
+    def test_server_url_matches_expected(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(
+            decoded.get('server_url'),
+            EXPECTED_SERVER_URL,
+            'server_url должен соответствовать webhook-адресу LiqPay',
+        )
+
+    def test_result_url_matches_expected(self):
+        decoded = decode_data(get_liqpay_context(self.order)['data'])
+        self.assertEqual(
+            decoded.get('result_url'),
+            EXPECTED_RESULT_URL,
+            'result_url должен соответствовать адресу успешной оплаты',
+        )
+
+
+class TestGetLiqpayContextSignature(BaseLiqpayContextTestCase):
+    """3. Валидация подписи signature."""
+
+    def test_signature_matches_manual_formula(self):
+        result = get_liqpay_context(self.order)
+        data = result['data']
+        expected = manual_signature(PRIVATE_KEY, data)
+        self.assertEqual(
+            result['signature'],
+            expected,
+            'signature должна быть равна base64(sha1(private_key + data + private_key))',
+        )
+
+    def test_signature_tied_to_private_key(self):
+        context = get_liqpay_context(self.order)
+        wrong = manual_signature('wrong_private_key', context['data'])
+        self.assertNotEqual(
+            context['signature'],
+            wrong,
+            'Подпись с другим private_key не должна совпадать',
+        )
+
+    def test_context_matches_recomputed_values(self):
+        context = get_liqpay_context(self.order)
+        recomputed = get_liqpay_context(self.order)
+        self.assertEqual(
+            context,
+            recomputed,
+            'Повторный вызов должен дать идентичные data и signature',
+        )
+
+
+class TestGetLiqpayContextSideEffects(BaseLiqpayContextTestCase):
+    """4. Побочные эффекты вызова функции."""
+
+    def test_order_not_modified_in_db(self):
+        before = Order.objects.get(pk=self.order.pk)
+        get_liqpay_context(self.order)
+        after = Order.objects.get(pk=self.order.pk)
+
+        fields = ('first_name', 'last_name', 'email', 'phone', 'paid', 'created', 'updated')
+        for field in fields:
+            self.assertEqual(
+                getattr(after, field),
+                getattr(before, field),
+                f'Поле {field} заказа не должно меняться при вызове функции',
+            )
+
+    def test_no_payment_records_created(self):
+        self.assertEqual(Payment.objects.count(), 0, 'До вызова не должно быть платежей')
+        get_liqpay_context(self.order)
+        self.assertEqual(
+            Payment.objects.count(),
+            0,
+            'Функция не должна создавать записи Payment',
+        )
+
+    def test_order_paid_status_unchanged(self):
+        self.order.paid = False
+        self.order.save()
+        get_liqpay_context(self.order)
+        fresh = Order.objects.get(pk=self.order.pk)
+        self.assertFalse(
+            fresh.paid,
+            'Функция не должна менять статус paid заказа',
+        )
