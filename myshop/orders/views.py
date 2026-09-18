@@ -9,10 +9,12 @@ from django.views.decorators.http import require_POST
 
 from cart.cart import Cart
 
+# pyrefly: ignore [missing-import]
 from .forms import OrderCreateForm
 from .liqpay import LiqPay
 from .models import Order, OrderItem
-from .services import create_payment, get_liqpay_context
+from .services import create_payment, get_liqpay_context, is_successful_liqpay_status
+
 
 
 logger = logging.getLogger(__name__)
@@ -252,8 +254,7 @@ def liqpay_webhook(request):
                     "updated",
                 ]
             )
-
-            if status == "success":
+            if is_successful_liqpay_status(status):
                 order.paid = True
                 order.save(
                     update_fields=[
@@ -261,6 +262,19 @@ def liqpay_webhook(request):
                         "updated",
                     ]
                 )
+
+            # if status == "success":
+            #     order.paid = True
+            #     order.save(
+            #         update_fields=[
+            #             "paid",
+            #             "updated",
+            #         ]
+            #     )
+
+            if is_successful_liqpay_status(status):
+                order.paid = True
+                order.save(update_fields=["paid", "updated"])
 
     except Order.DoesNotExist:
         logger.warning(
