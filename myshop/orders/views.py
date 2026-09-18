@@ -223,16 +223,31 @@ def liqpay_webhook(request):
                 .get(id=order_id)
             )
 
-            payment = (
-                order.payments
-                .select_for_update()
-                .filter(
-                    provider="liqpay",
-                    status="pending",
+            payment = None
+
+            if transaction_id:
+                payment = (
+                    order.payments
+                    .select_for_update()
+                    .filter(
+                        provider="liqpay",
+                        transaction_id=transaction_id,
+                    )
+                    .order_by("-created")
+                    .first()
                 )
-                .order_by("-created")
-                .first()
-            )
+
+            if payment is None:
+                payment = (
+                    order.payments
+                    .select_for_update()
+                    .filter(
+                        provider="liqpay",
+                        status="pending",
+                    )
+                    .order_by("-created")
+                    .first()
+                )
 
             if payment is None:
                 logger.warning(
