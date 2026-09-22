@@ -28,22 +28,22 @@ DEBUG = True
 #     "https",
 # )
 
-DEBUG = True
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://sushipizza.pythonanywhere.com",
-# ]
-# ALLOWED_HOSTS = [
-#     "sushipizza.pythonanywhere.com",
-#     "localhost",
-#     "127.0.0.1",
-#     "www.sushipizza.pythonanywhere.com",
-# ]
-
-ALLOWED_HOSTS = [
-    "*",
-    "localhost",
-    "127.0.0.1"
+DEBUG = False
+CSRF_TRUSTED_ORIGINS = [
+    "https://sushipizza.pythonanywhere.com",
 ]
+ALLOWED_HOSTS = [
+    "sushipizza.pythonanywhere.com",
+    "localhost",
+    "127.0.0.1",
+    "www.sushipizza.pythonanywhere.com",
+]
+
+# ALLOWED_HOSTS = [
+#     "*",
+#     "localhost",
+#     "127.0.0.1"
+# ]
 
 # Application definition
 
