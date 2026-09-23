@@ -90,6 +90,11 @@ class Payment(models.Model):
     updated = models.DateTimeField(
         auto_now=True, verbose_name="Дата обновления"
     )
+    #модель хранящяя статус отправки уведомления о заказе в телеграм
+    telegram_notified = models.BooleanField(
+        default=False,
+        verbose_name="Telegram уведомление отправлено"
+    )
 
     class Meta:
         verbose_name = "Платёж"

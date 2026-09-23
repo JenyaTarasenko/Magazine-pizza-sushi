@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="uk" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8" />
@@ -9,7 +9,8 @@
     <title>{% block title %}{{ seo_title|default:"Доставка Пиццы и Суши в Днепре" }}{% endblock %}</title>
 
     <!-- Open Graph -->
-    <meta property="og:title" content="{{ seo_title|default:'Доставка Пиццы и Суши в Днепре' }}">
+    <meta property="og:title" content="{{ seo_title|default:'' }}">
+    <meta name="robots" content="index, follow">
     <meta property="og:description"
         content="{{ seo_description|default:'Доставка Пиццы и Суши в Днепре. Закажите онлайн с быстрой доставкой за 40 минут!' }}">
     <meta property="og:type" content="website">

@@ -12,23 +12,23 @@ SECRET_KEY = 'django-insecure-+o%fobu#7*))d_y@w=(r(ihff6a0163xu3z3^e$zr@=(4d6#6y
 LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY', default='')
 LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY', default='')
 
-DEBUG = True
-
-# if DEBUG:
-#     SECURE_SSL_REDIRECT = False
-#     SESSION_COOKIE_SECURE = False
-#     CSRF_COOKIE_SECURE = False
-# else:
-#     SECURE_SSL_REDIRECT = True
-#     SESSION_COOKIE_SECURE = True
-#     CSRF_COOKIE_SECURE = True
-
-# SECURE_PROXY_SSL_HEADER = (
-#     "HTTP_X_FORWARDED_PROTO",
-#     "https",
-# )
-
 DEBUG = False
+
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
+
+
 CSRF_TRUSTED_ORIGINS = [
     "https://sushipizza.pythonanywhere.com",
 ]
@@ -160,3 +160,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Это ключ, который будет использоваться для хранения корзины в поль- зовательском сеансе
 CART_SESSION_ID = 'cart'
+
+################################Telegram bot###########################################################################
+TELEGRAM_BOT_TOKEN = config(
+    "TELEGRAM_BOT_TOKEN",
+    default=""
+)
+TELEGRAM_CHAT_ID = config(
+    "TELEGRAM_CHAT_ID",
+    default=""
+)
+################################Telegram bot###########################################################################

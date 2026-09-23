@@ -1,74 +1,42 @@
-# """
-# Telegram Bot уведомления для заказов.
-# """
-
-# import logging
-# import requests
-# from django.conf import settings
-
-# logger = logging.getLogger(__name__)
-
-
-# def send_telegram_message(text):
-#     """Отправляет сообщение в Telegram.
-    
-#     Args:
-#         text: Текст сообщения (поддерживает HTML)
-        
-#     Returns:
-#         bool: True если сообщение отправлено успешно, False иначе
-#     """
-#     bot_token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
-#     chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', None)
-    
-#     if not bot_token or not chat_id:
-#         logger.warning("Telegram bot not configured: missing TOKEN or CHAT_ID")
-#         return False
-    
-#     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    
-#     payload = {
-#         "chat_id": chat_id,
-#         "text": text,
-#         "parse_mode": "HTML"
-#     }
-    
-#     try:
-#         response = requests.post(url, data=payload, timeout=10)
-#         response.raise_for_status()
-        
-#         result = response.json()
-#         if result.get('ok'):
-#             logger.info("Telegram message sent successfully")
-#             return True
-#         else:
-#             logger.error(f"Telegram API error: {result}")
-#             return False
-            
-#     except requests.exceptions.Timeout:
-#         logger.error("Telegram request timeout")
-#         return False
-#     except requests.exceptions.ConnectionError as e:
-#         logger.error(f"Telegram connection error: {e}")
-#         return False
-#     except requests.exceptions.HTTPError as e:
-#         logger.error(f"Telegram HTTP error: {e}")
-#         return False
-#     except Exception as e:
-#         logger.exception(f"Unexpected Telegram error: {e}")
-#         return False
-
 import requests
 from django.conf import settings
 
 
-def send_telegram_message(text):
-    url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
-    
+def send_telegram_message(message):
+    url = (
+        f"https://api.telegram.org/"
+        f"bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+    )
+
     payload = {
         "chat_id": settings.TELEGRAM_CHAT_ID,
-        "text": text,
-        "parse_mode": "HTML"
+        "text": message,
     }
 
-    requests.post(url, data=payload)
+    response = requests.post(
+        url,
+        json=payload,
+        timeout=10,
+    )
+
+    response.raise_for_status()
+
+    return response.json()
+
+
+def send_payment_notification(payment):
+    order = payment.order
+
+    message = (
+        "🍕 НОВЫЙ ОПЛАЧЕННЫЙ ЗАКАЗ\n\n"
+        f"Заказ №{order.id}\n"
+        f"Платёж №{payment.id}\n\n"
+        f"👤 Имя: {order.first_name}\n"
+        f"👤 Фамилия: {order.last_name}\n"
+        f"📞 Телефон: {order.phone}\n\n"
+        f"💰 Сумма: {payment.amount} {payment.currency}\n"
+        f"💳 Статус: {payment.status}\n"
+        f"🔑 Transaction ID: {payment.transaction_id or '—'}"
+    )
+
+    return send_telegram_message(message)
