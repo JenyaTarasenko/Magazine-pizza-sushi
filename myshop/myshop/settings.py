@@ -96,7 +96,6 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -106,8 +105,7 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -128,14 +126,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-
+###########################Ukraine Kiev################################################################
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kyiv'
 
 USE_I18N = True
 
 USE_TZ = True
+###########################Ukraine Kiev################################################################
 
 
 

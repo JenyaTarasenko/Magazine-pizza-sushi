@@ -274,9 +274,32 @@ def liqpay_webhook(request):
         return HttpResponse(status=500)
 
     # Telegram отправляем ПОСЛЕ успешного commit БД
-    if should_notify_telegram:
+    # if should_notify_telegram:
+    #     try:
+    #         send_payment_notification(payment_for_notification)
+
+    #     except Exception:
+    #         logger.exception(
+    #             "Telegram: ошибка отправки уведомления "
+    #             "для Order %s",
+    #             order_id,
+    #         )
+    
+    #новая функция для телеги чтобы не было повторного вызова 
+    if (
+        should_notify_telegram
+        and not payment_for_notification.telegram_notified
+    ):
         try:
             send_payment_notification(payment_for_notification)
+
+            payment_for_notification.telegram_notified = True
+            payment_for_notification.save(
+                update_fields=[
+                    "telegram_notified",
+                    "updated",
+                ]
+            )
 
         except Exception:
             logger.exception(
@@ -284,6 +307,7 @@ def liqpay_webhook(request):
                 "для Order %s",
                 order_id,
             )
+    #новая функция для телеги чтобы не было повторного вызова 
 
     logger.info(
         "LiqPay webhook успешно обработан: "
