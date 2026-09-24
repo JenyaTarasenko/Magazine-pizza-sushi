@@ -26,6 +26,13 @@ def send_telegram_message(message):
 
 def send_payment_notification(payment):
     order = payment.order
+    items = order.items.select_related("product").all()
+
+    items_text = "\n".join(
+        f"• {item.product.name} × {item.quantity} — "
+        f"{item.get_cost()} UAH"
+        for item in items
+    )
 
     message = (
         "🍕 НОВЫЙ ОПЛАЧЕННЫЙ ЗАКАЗ\n\n"
@@ -34,9 +41,13 @@ def send_payment_notification(payment):
         f"👤 Имя: {order.first_name}\n"
         f"👤 Фамилия: {order.last_name}\n"
         f"📞 Телефон: {order.phone}\n\n"
+        "🛒 Товары:\n"
+        f"{items_text}\n\n"
         f"💰 Сумма: {payment.amount} {payment.currency}\n"
         f"💳 Статус: {payment.status}\n"
         f"🔑 Transaction ID: {payment.transaction_id or '—'}"
     )
+   
+
 
     return send_telegram_message(message)

@@ -134,6 +134,8 @@ TIME_ZONE = 'Europe/Kyiv'
 USE_I18N = True
 
 USE_TZ = True
+# вид 14:00
+TIME_FORMAT = "H:i"
 ###########################Ukraine Kiev################################################################
 
 

@@ -13,14 +13,23 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'first_name', 'last_name', 'email', 'phone', 'paid', 'created', 'get_total_cost']
+    list_display = ['id', 'first_name', 'last_name', 'email', 'phone', 'paid', 'created', 'get_total_cost','items_list']
     list_filter = ['paid', 'created', 'updated']
     search_fields = ['first_name', 'last_name', 'email']
     inlines = [OrderItemInline]
 
+    # общая сумма заказа в админке 
     def get_total_cost(self, obj):
         return obj.get_total_cost()
     get_total_cost.short_description = 'Общая сумма заказа'
+
+    #перечень заказа в админке 
+    @admin.display(description="Товары")
+    def items_list(self, obj):
+        return ", ".join(
+            f"{item.product.name} × {item.quantity}"
+            for item in obj.items.select_related("product").all()
+        )
 
 
 @admin.register(Payment)
@@ -35,6 +44,7 @@ class PaymentAdmin(admin.ModelAdmin):
         "transaction_id",
         "created",
         "updated",
+        "items_list",
     )
 
     list_filter = (
@@ -50,3 +60,11 @@ class PaymentAdmin(admin.ModelAdmin):
     )
 
     ordering = ("-created",)
+
+    #перечень заказа в админке у платежей 
+    @admin.display(description="Товары")
+    def items_list(self, obj):
+        return ", ".join(
+            f"{item.product.name} × {item.quantity}"
+            for item in obj.order.items.select_related("product").all()
+        )
