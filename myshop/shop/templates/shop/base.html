@@ -9,16 +9,30 @@
     <title>{% block title %}{{ seo_title|default:"Доставка Пиццы и Суши в Днепре" }}{% endblock %}</title>
 
     <!-- Open Graph -->
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon/favicon.ico' %}">
     <meta property="og:title" content="{{ seo_title|default:'' }}">
     <meta name="robots" content="index, follow">
     <meta property="og:description"
         content="{{ seo_description|default:'Доставка Пиццы и Суши в Днепре. Закажите онлайн с быстрой доставкой за 40 минут!' }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    {% if seo_image %}
-    <meta property="og:image"
-        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ seo_image }}{% endblock %}">
-    {% endif %}
+    <!-- конструкция для картинки favicon/og.png на детальной product.image -->
+    <meta
+        property="og:image"
+        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'image/favicon/og.png' %}{% endblock %}"
+    >
+    <meta
+        property="og:site_name"
+        content="Pizza mania"
+    >
+    <link
+        rel="canonical"
+        href="{{ canonical_url|default:request.build_absolute_uri }}"
+    >
+    <meta
+        property="og:locale"
+        content="uk_UA"
+    >
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
         {
@@ -36,7 +50,7 @@
         "openingHours": "Mo-Su 10:00-21:00",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+380 (99) 016 00 02",
+            "telephone": "+380 (99) 016 08 92",
             "contactType": "Customer Service"
         }
         }

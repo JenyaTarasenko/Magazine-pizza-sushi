@@ -1,6 +1,8 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% block title %}
+    Доставка піци та суші в Дніпрі | Pizza Mania
+{% endblock %}
 {% block content %}
 <!---------------- главный экран-------------- -->
 
@@ -184,66 +186,7 @@
 
 <!---------------- компонент меню-------------- -->
 
-<div class="flex items-center justify-center mt-20 mb-20 flex-col">
-
-    <!-- ОБЕРТКА -->
-
-    <div class="relative">
-        <!-- 🍕 КАРТИНКА СЛЕВА при уменьшении экрана картинка уходит под карточку -->
-        <img src="{% static 'image/fon-roll.webp' %}" class="absolute 
-            top-0 left-1/2 -translate-x-1/2   
-            sm:-top-10 sm:-left-10 sm:translate-x-0  
-            w-32 sm:w-40 md:w-52 
-            opacity-80 z-0 pointer-events-none" loading="lazy">
-
-        <!-- 🍕 КАРТИНКА СЗАДИ при уменьшении экрана картинка уходит под карточку -->
-        <img src="{% static 'image/fon-pizza.webp' %}" class="absolute 
-            bottom-0 left-1/2 -translate-x-1/2   
-            sm:-bottom-10 sm:-right-10 sm:left-auto sm:translate-x-0  
-            w-40 sm:w-52 md:w-64 
-            opacity-80 z-0 pointer-events-none" loading="lazy">
-
-        <!-- 📦 КАРТОЧКА -->
-        <div
-            class="relative z-10 max-w-sm bg-[#FFCB90]/40 backdrop-blur-lg border-white/20  rounded-[50px] overflow-hidden">
-
-            <div class="p-6 text-center flex flex-col items-center">
-
-                <img src="{% static 'image/menu.svg' %}" class="w-10 h-10 mb-4">
-
-                <h3 class="text-3xl font-montserrat text-[#64352A]">
-                    Меню
-                </h3>
-
-
-                <p class="text-[#64352A] text-sm font-montserrat p-5 text-left">
-                    В нашей доставке — один из самых больших выборов пиццы в городе
-                    На любой вкус с разными начинками размером 30 см.
-                    Также в меню — суши и роллы от доступных до премиум-уровня.
-                </p>
-
-                <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                        hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                    Заказать доставку
-                </a>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
 <!---------------- компонент меню-------------- -->
-
-<!-- универсальный компонент категории -->
-<div class="flex items-center justify-center mt-20 mb-20 flex-row px-1">
-    <h4 class="text-4xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A] text-center">Пицца
-        <span class="text-[#BF0F0F] font-normal">суши &
-            роллы</span>
-    </h4>
-</div>
 <div class="flex items-center justify-center mt-20 gap-10 mb-10">
     <div class="bg-[#FFCB90] rounded-[50px] overflow-hidden ">
         <!-- Внутренний блок с текстом и padding -->
@@ -256,94 +199,6 @@
 </div>
 <!---------------- компонент категории-------------- -->
 
-
-<!----------------Pizza-About---------------->
-<section class="hidden md:block relative w-full h-[500px] md:h-[800px]">
-
-    <!-- 📱 Моб картинка -->
-    <img src="{% static 'image/Pizza-About.webp' %}" class="absolute inset-0 w-full h-full object-cover" alt="bg"
-        loading="lazy">
-    <!-- 📦 Плашка -->
-    <div class="relative z-10 h-full flex items-center justify-center px-4">
-
-        <div
-            class="bg-white/40 backdrop-blur-lg border-white/20 rounded-[50px] p-6 md:p-10 max-w-md text-center md:text-left">
-
-            <h4 class="text-6xl md:text-3xl font-bold mb-3 font-montserrat text-[#64352A]">
-                Pizza
-            </h4>
-
-            <p class="mb-5 font-montserrat text-[#64352A]">
-                У нас более 40 оригинальных рецептов пиццы — таких, которые вы точно никогда не пробовали раньше!
-                Каждая пицца уникальна, не повторяется с другими и дарит совершенно новый, незабываемый вкус. За 8
-                лет на рынке наши рецепты отточены до идеала, а настоящая душа привезена прямиком из Италии — от
-                классического теста до секретных сочетаний ингредиентов
-            </p>
-
-            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full  
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                Заказать доставку
-            </a>
-        </div>
-    </div>
-</section>
-
-<section class="relative w-full h-[500px] md:h-[800px] md:hidden">
-
-    <!-- 📱 Моб картинка -->
-    <img src="{% static 'image/Pizza-about-mob.webp' %}" class="absolute inset-0 w-full h-full object-cover" alt="bg"
-        loading="lazy">
-
-    <!-- затемнение -->
-    <div class="absolute inset-0 bg-black/10"></div>
-
-    <!-- 📦 Плашка -->
-    <div class="relative z-10 h-full flex items-center justify-center px-4">
-
-        <div
-            class="bg-white/40 backdrop-blur-lg border-white/20 rounded-[50px] p-6 md:p-10 max-w-md text-center md:text-left">
-
-            <h4 class="text-3xl md:text-3xl font-bold mb-3 font-montserrat text-[#64352A]">
-                Pizza
-            </h4>
-
-            <p class="mb-5 font-montserrat text-[#64352A] text-sm text-left">
-                У нас более 40 оригинальных рецептов пиццы — таких, которые вы точно никогда не пробовали раньше!
-                Каждая пицца уникальна, не повторяется с другими и дарит совершенно новый, незабываемый вкус. За 8
-                лет на рынке наши рецепты отточены до идеала, а настоящая душа привезена прямиком из Италии — от
-                классического теста до секретных сочетаний ингредиентов
-            </p>
-            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                Заказать доставку
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-<!----------------Pizza-About---------------->
-<!----------------Текст-------------- -->
-<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
-    <img src="{% static 'image/piz-logo.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
-    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Горячая
-        <!-- вертикальная линия -->
-        <span class="w-[3px] h-10 bg-red-500"></span>
-        <span class="text-[#BF0F0F] font-normal">Пицца</span>
-    </h4>
-    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Большой выбор пиццы на любой
-        вкус с разными ингредиентами</h5>
-</div>
-<div class="flex items-center justify-center mt-10 flex-row px-1 text-center">
-    <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-        Заказать доставку
-    </a>
-
-</div>
-<!----------------Текст-------------- -->
-
 <!----------------карточка пицца ---------------->
 <div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
 
@@ -352,7 +207,7 @@
     {% endfor %}
 
 </div>
-<div class="flex items-center justify-center mt-20 flex-row px-1 text-center mb-10">
+<div class="flex items-center justify-center mt-20 flex-row px-1 text-center">
     <a href="{% url 'shop:category_detail' 'pizza' %}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
                 hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
         Вся пицца
@@ -368,103 +223,9 @@
     {% endfor %}
 
 </div>
-<div class="flex items-center justify-center mt-20 flex-row px-1 text-center mb-10">
-    <a href="{% url 'shop:category_detail' 'napitki' %}" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-        Вся пицца
-    </a>
-
-</div>
 <!----------------карточка пицца ---------------->
-<!----------------Sushi-About---------------->
-<section class="hidden md:block relative w-full h-[500px] md:h-[600px]">
-
-    <!-- 📱 Моб картинка -->
-    <img src="{% static 'image/Sushi.webp' %}" class="absolute inset-0 w-full h-full object-cover" alt="bg"
-        loading="lazy">
-
-    <!-- 📦 Плашка -->
-    <div class="relative z-10 h-full flex items-center justify-center px-4">
-
-        <div
-            class="bg-white/40 backdrop-blur-lg border-white/20 rounded-[50px] p-6 md:p-10 max-w-md text-center md:text-left">
-
-            <h4 class="text-6xl md:text-3xl font-bold mb-3 font-montserrat text-[#64352A]">
-                Sushi & Rolls
-            </h4>
-
-            <p class="mb-5 font-montserrat text-[#64352A]">
-                У нас большой опыт в приготовлении суши и роллов, и мы используем только собственные уникальные
-                рецепты. Готовим из свежих ингредиентов и сертифицированных продуктов. В нашем меню — большой
-                выбор суши и роллов на любой вкус и бюджет.
-            </p>
-
-            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                Заказать доставку
-            </a>
-        </div>
-    </div>
-</section>
-
-<section class="relative w-full h-[500px] md:h-[800px] md:hidden">
-
-    <!-- 📱 Моб картинка -->
-    <img src="{% static 'image/sushi1.webp' %}" class="absolute inset-0 w-full h-full object-cover" alt="bg"
-        loading="lazy">
-
-    <!-- затемнение -->
-    <div class="absolute inset-0 bg-black/10"></div>
-
-    <!-- 📦 Плашка -->
-    <div class="relative z-10 h-full flex items-center justify-center px-4">
-
-        <div
-            class="bg-white/40 backdrop-blur-lg border-white/20 rounded-[50px] p-6 md:p-10 max-w-md text-center md:text-left">
-
-            <h4 class="text-3xl md:text-3xl font-bold mb-3 font-montserrat text-[#64352A]">
-                Sushi & Rolls
-            </h4>
-
-            <p class="mb-5 font-montserrat text-[#64352A] text-sm text-left">
-                У нас большой опыт в приготовлении суши и роллов, и мы используем только собственные уникальные
-                рецепты. Готовим из свежих ингредиентов и сертифицированных продуктов. В нашем меню — большой
-                выбор суши и роллов на любой вкус и бюджет.
-            </p>
-
-            <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-                Заказать доставку
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-<!----------------Pizza-About---------------->
-
-<!----------------Текст-------------- -->
-<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
-    <img src="{% static 'image/sush-logo.svg' %}" class="w-20 h-20 mb-4" alt="суши быстрая доставка Днепр"
-        loading="lazy">
-    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Суши &
-        <span class="text-[#BF0F0F] font-normal">Роллы</span>
-    </h4>
-    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Большой выбор роллов и сетов
-        — горячих и холодных — на любой вкус.</h5>
-</div>
-<div class="flex items-center justify-center mt-10 flex-row px-1 text-center">
-    <a href="tel:+380990160002" class="inline-block mt-8 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A]">
-        Заказать доставку
-    </a>
-
-</div>
-<!----------------Текст--------------->
-
 <!----------------Sushi кароточка--------------->
-<div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[200px]">
+<div class="flex items-center justify-center mt-20 gap-20 sm:gap-5 mb-10 flex-wrap mt-[100px]">
 
     {% for product in new_sushis %}
     {% include 'include/product_card.html' with product=product category=category %}
@@ -568,24 +329,8 @@
 <!----------------доставка баннер--------------->
 
 <!----------------как заказать--------------->
-<!----------------Текст-------------- -->
-<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
-    <img src="{% static 'image/dostavka.svg' %}" class="w-20 h-20 mb-4" alt="pizza" loading="lazy">
-    <h4 class="text-5xl sm:text-6xl font-bold mb-2 font-montserrat text-[#64352A]">Как заказать
-        <span class="text-[#BF0F0F] font-normal">доставку</span>
-    </h4>
-    <h5 class="text-sm font-normal mb-2 font-montserrat text-[#64352A] max-w-[350px] mt-5">Доставка осуществляется в
-        течении 40 минут</h5>
-</div>
-<div class="flex items-center justify-center mt-5 flex-row px-1 text-center">
-    <a href="tel:+380990160002" class="inline-block mt-3 px-6 py-3 border-2 border-[#64352A] rounded-full 
-                hover:bg-[#64352A] hover:text-white transition font-montserrat text-[#64352A] mb-5">
-        Заказать доставку
-    </a>
-</div>
-<!----------------Текст-------------- -->
 
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4 mt-20">
     <!-- Карточка 1 -->
     <div class="bg-[#FFCB90]/40 rounded-2xl p-6 flex flex-col font-montserrat">
         <div class="flex flex-col items-start">
@@ -762,12 +507,7 @@
 
 <!----------------смотри еще------------- -->
 <!-- смотри еще -->
-<div class="flex items-center justify-center mt-20 flex-col px-1 text-center">
-    <h4 class="text-2xl font-bold mb-2 font-montserrat text-[#64352A]">
-        Смотрите
-        <span class="text-[#BF0F0F] font-normal">также</span>
-    </h4>
-</div>
+
 
 
 <!-- смотри еще  -->

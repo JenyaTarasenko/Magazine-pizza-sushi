@@ -228,7 +228,8 @@ def category_detail(request, slug):
     else:
         seo_description = f"Купити {category.name} онлайн швидко та зручно"
 
-    seo_title = category.name
+    seo_title = f"{category.name} в Дніпрі — замовити з доставкою | Pizza Mania"
+
     seo_keywords = ', '.join(category.name.split())
 
     context = {

@@ -12,7 +12,7 @@ SECRET_KEY = 'django-insecure-+o%fobu#7*))d_y@w=(r(ihff6a0163xu3z3^e$zr@=(4d6#6y
 LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY', default='')
 LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY', default='')
 
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     SECURE_SSL_REDIRECT = False
